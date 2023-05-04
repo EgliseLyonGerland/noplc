@@ -5,7 +5,10 @@ import { Game } from "../types";
 
 const defaultGame: Game = {
   teams: [],
+  grid: [],
   started: false,
+  ended: false,
+  currentQuizId: null,
 };
 
 export default function useGame() {
@@ -67,13 +70,21 @@ export default function useGame() {
     setData(defaultGame);
   }
 
+  function startQuiz(id: number) {
+    setData({
+      ...data,
+      currentQuizId: id,
+    });
+  }
+
   return {
     game: data,
+    reset,
     start,
     stop,
     addTeam,
     renameTeam,
     removeTeam,
-    reset,
+    startQuiz,
   };
 }
