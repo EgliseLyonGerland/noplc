@@ -1,3 +1,21 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer utilities {
+  .flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .inline-flex-center {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+html {
+  @apply bg-slate-900 text-slate-300 font-roboto;
+}
