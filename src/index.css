@@ -17,5 +17,6 @@
 }
 
 html {
-  @apply bg-slate-900 text-slate-300 font-roboto;
+  @apply font-roboto;
+  font-size: 24px;
 }
