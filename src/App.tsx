@@ -1,5 +1,6 @@
 import Grid from "./Grid";
 import useGame from "./libs/useGame";
+import Logo from "./Logo";
 import Quiz from "./Quiz";
 import Setup from "./Setup";
 
@@ -16,10 +17,8 @@ function App() {
   }
 
   return (
-    <div className="flex h-screen flex-col items-center gap-12 p-12">
-      <h1 className="text-3xl font-bold uppercase">
-        N'oubliez pas les cantiques
-      </h1>
+    <div className="flex h-screen flex-col items-center gap-10 p-6">
+      <Logo className="fill-neutral-content h-[15vh]" />
       <div className="w-full flex-1">
         <Content />
       </div>

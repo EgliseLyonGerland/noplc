@@ -7,11 +7,11 @@ import useGame from "./libs/useGame";
 import { Point } from "./types";
 
 const colors: Record<Point, string> = {
-  10: clsx("bg-sky-600/80"),
-  20: clsx("bg-teal-600/80"),
-  30: clsx("bg-lime-600/80"),
-  40: clsx("bg-rose-600/80"),
-  50: clsx("bg-orange-600/80"),
+  10: clsx("bg-sky-600/80 text-white"),
+  20: clsx("bg-teal-600/80 text-white"),
+  30: clsx("bg-lime-600/80 text-white"),
+  40: clsx("bg-rose-600/80 text-white"),
+  50: clsx("bg-orange-600/80 text-white"),
 };
 
 function Grid() {
@@ -24,7 +24,7 @@ function Grid() {
         {categories.map(({ id, name, point }) => (
           <button
             className={clsx(
-              "btn flex-center h-auto rounded-lg p-2 text-center text-[2.6vh] uppercase leading-tight",
+              "btn flex-center h-auto rounded-lg border-0 p-2 text-center text-[2.6vh] uppercase leading-tight",
               colors[point]
             )}
             key={id}
