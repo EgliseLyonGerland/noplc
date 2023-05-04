@@ -1,6 +1,7 @@
 import useLocalStorage from "use-local-storage";
 import { v4 as uuid } from "uuid";
 
+import { categories, quizzes } from "./config";
 import { Game } from "../types";
 
 const defaultGame: Game = {
@@ -60,10 +61,7 @@ export default function useGame() {
   }
 
   function removeTeam(id: string) {
-    setData({
-      ...data,
-      teams: data.teams.filter((team) => team.id !== id),
-    });
+    setData({ ...data, teams: data.teams.filter((team) => team.id !== id) });
   }
 
   function reset() {
@@ -71,10 +69,19 @@ export default function useGame() {
   }
 
   function startQuiz(id: number) {
-    setData({
-      ...data,
-      currentQuizId: id,
-    });
+    setData({ ...data, currentQuizId: id });
+  }
+
+  function stopQuiz() {
+    setData({ ...data, currentQuizId: null });
+  }
+
+  function getQuiz() {
+    return quizzes.find((quiz) => quiz.id === data.currentQuizId);
+  }
+
+  function getCategory(id: number) {
+    return categories.find((category) => category.id === id);
   }
 
   return {
@@ -86,5 +93,8 @@ export default function useGame() {
     renameTeam,
     removeTeam,
     startQuiz,
+    stopQuiz,
+    getQuiz,
+    getCategory,
   };
 }

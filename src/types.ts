@@ -7,8 +7,9 @@ export interface Team {
 
 export interface Quiz {
   id: number;
-  title: string;
   categoryId: number;
+  title: string;
+  lyrics: string[];
 }
 
 export interface Game {

@@ -64,6 +64,7 @@ function Grid() {
                 .map((quiz) => (
                   <button
                     className="btn btn-primary btn-xl text-xl"
+                    key={quiz.id}
                     onClick={() => startQuiz(quiz.id)}
                   >
                     {quiz.title}

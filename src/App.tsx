@@ -1,3 +1,5 @@
+import { FC } from "react";
+
 import Grid from "./Grid";
 import useGame from "./libs/useGame";
 import Logo from "./Logo";
@@ -7,7 +9,7 @@ import Setup from "./Setup";
 function App() {
   const { game } = useGame();
 
-  let Content = Setup;
+  let Content: FC = Setup;
   if (game.started) {
     if (game.currentQuizId) {
       Content = Quiz;
