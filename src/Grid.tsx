@@ -1,4 +1,5 @@
 import clsx from "clsx";
+
 import { categories } from "./libs/config";
 
 const colors = [
@@ -15,11 +16,11 @@ function Grid() {
       {Object.entries(categories).map(([point, songs], rowIndex) =>
         songs.map((song) => (
           <div
-            key={`${song}-${point}`}
             className={clsx(
               "flex-center rounded-lg p-2 text-center text-[2.6vh] uppercase leading-tight",
               colors[rowIndex]
             )}
+            key={`${song}-${point}`}
           >
             {song}
           </div>

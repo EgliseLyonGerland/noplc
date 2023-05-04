@@ -1,6 +1,7 @@
-import useGame from "./libs/useGame";
-import { Fragment } from "react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
+import { Fragment } from "react";
+
+import useGame from "./libs/useGame";
 
 function Setup() {
   const { game, start, addTeam, renameTeam, removeTeam, reset } = useGame();
@@ -11,11 +12,8 @@ function Setup() {
         {game.teams.concat({ id: "", name: "" }).map((team, index) => (
           <Fragment key={`row-${index}`}>
             <input
-              key={`input-${index}`}
-              type="text"
-              placeholder="Ajouter une équipe"
               className="input input-bordered input-primary col-span-4 w-full"
-              value={team.name}
+              key={`input-${index}`}
               onChange={(event) => {
                 if (team.id) {
                   renameTeam(team.id, event.target.value);
@@ -23,6 +21,9 @@ function Setup() {
                   addTeam(event.target.value);
                 }
               }}
+              placeholder="Ajouter une équipe"
+              type="text"
+              value={team.name}
             />
             <button
               className="btn btn-ghost btn-circle"
@@ -42,8 +43,8 @@ function Setup() {
           Reset
         </button>
         <button
-          disabled={game.teams.length < 2}
           className="btn btn-primary"
+          disabled={game.teams.length < 2}
           onClick={start}
         >
           Démarrer le jeu

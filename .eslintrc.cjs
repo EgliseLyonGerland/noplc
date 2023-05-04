@@ -7,9 +7,29 @@ module.exports = {
   ],
   parser: "@typescript-eslint/parser",
   parserOptions: { ecmaVersion: "latest", sourceType: "module" },
-  plugins: ["react-refresh", "tailwindcss"],
+  plugins: ["react-refresh", "react", "import", "tailwindcss"],
   rules: {
+    "prefer-template": "error",
+    quotes: [
+      "error",
+      "double",
+      { avoidEscape: true, allowTemplateLiterals: false },
+    ],
+    "import/order": [
+      "error",
+      {
+        groups: ["builtin", "external", "internal", ["parent", "sibling"]],
+        "newlines-between": "always",
+        alphabetize: {
+          order: "asc",
+          caseInsensitive: true,
+        },
+      },
+    ],
+
     "react-refresh/only-export-components": "warn",
+    "react/sort-default-props": 1,
+    "react/jsx-sort-props": 1,
 
     "tailwindcss/classnames-order": "error",
     "tailwindcss/enforces-negative-arbitrary-values": "error",

@@ -1,6 +1,6 @@
 import Grid from "./Grid";
-import Setup from "./Setup";
 import useGame from "./libs/useGame";
+import Setup from "./Setup";
 
 function App() {
   const { game } = useGame();
