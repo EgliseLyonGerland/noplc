@@ -74,10 +74,11 @@ export default function useGame() {
 
   function getCurrentTeam() {
     const lastTeamId = data.results[data.results.length - 1]?.teamId;
-    const index = Math.max(
-      0,
-      data.teams.findIndex((team) => team.id === lastTeamId)
-    );
+    let index = data.teams.findIndex((team) => team.id === lastTeamId) + 1;
+
+    if (index === data.teams.length) {
+      index = 0;
+    }
 
     return data.teams[index];
   }
@@ -130,5 +131,6 @@ export default function useGame() {
     endCurrentQuiz,
     getCategory,
     isCategoryPlayed,
+    getCurrentTeam,
   };
 }

@@ -82,7 +82,12 @@ export const quizzes: Quiz[] = [
     id: 4,
     categoryId: 2,
     title: "Chantons !",
-    lyrics: [],
+    lyrics: [
+      "Chantons, car Dieu est là,",
+      "Poussons des cris de joie,",
+      "Dressons-lui un trône de reconnaissance,",
+      "Un palais de louange !",
+    ],
   },
   {
     id: 5,

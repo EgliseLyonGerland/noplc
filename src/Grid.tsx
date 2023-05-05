@@ -15,14 +15,19 @@ const colors: Record<Point, string> = {
 };
 
 function Grid() {
-  const { startQuiz, isCategoryPlayed } = useGame();
+  const { startQuiz, isCategoryPlayed, getCurrentTeam } = useGame();
   const [selectedCategory, setSelectedCategory] = useState<number>();
 
+  const currentTeam = getCurrentTeam();
+
   return (
-    <>
+    <div className="flex-center h-full flex-col gap-4">
+      <h3 className="badge badge-primary badge-outline badge-lg px-4 py-6 text-2xl">
+        L'équipe "{currentTeam.name}" choisit une catégorie
+      </h3>
       <div className="grid h-full flex-1 grid-cols-6 grid-rows-5 gap-2">
         {categories.map(({ id, name, point }) => (
-          <div className="relative flex">
+          <div className="relative flex" key={id}>
             <button
               className={clsx(
                 "btn flex-center h-full w-full rounded-lg border-0 p-2 text-center text-[2.6vh] uppercase leading-tight",
@@ -81,7 +86,7 @@ function Grid() {
           </div>
         </label>
       </label>
-    </>
+    </div>
   );
 }
 

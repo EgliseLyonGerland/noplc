@@ -19,7 +19,7 @@ function App() {
   }
 
   return (
-    <div className="flex h-screen flex-col items-center gap-10 p-6">
+    <div className="flex h-screen flex-col items-center gap-6 p-6">
       <Logo className="fill-neutral-content h-[15vh]" />
       <div className="w-full flex-1">
         <Content />
