@@ -4,7 +4,8 @@ import { Fragment } from "react";
 import useGame from "./libs/useGame";
 
 function Setup() {
-  const { game, start, addTeam, renameTeam, removeTeam, reset } = useGame();
+  const { game, startGame, addTeam, renameTeam, removeTeam, resetGame } =
+    useGame();
 
   return (
     <div className="flex flex-col items-center gap-8">
@@ -39,13 +40,13 @@ function Setup() {
       </div>
 
       <div className="flex gap-2">
-        <button className="btn btn-ghost" onClick={reset}>
+        <button className="btn btn-ghost" onClick={resetGame}>
           Reset
         </button>
         <button
           className="btn btn-primary"
           disabled={game.teams.length < 2}
-          onClick={start}
+          onClick={startGame}
         >
           Démarrer le jeu
         </button>

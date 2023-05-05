@@ -1,4 +1,4 @@
-import useLocalStorage from "use-local-storage";
+import useLocalStorageState from "use-local-storage-state";
 import { v4 as uuid } from "uuid";
 
 import { categories, quizzes } from "./config";
@@ -13,25 +13,11 @@ const defaultGame: Game = {
 };
 
 export default function useGame() {
-  const [data, setData] = useLocalStorage<Game>("game", defaultGame, {
-    serializer: (entry) => {
-      return JSON.stringify(entry);
-    },
-    parser: (entry) => {
-      let game = {};
-
-      try {
-        game = JSON.parse(entry);
-      } catch (e) {
-        // nothing
-      }
-
-      return { ...defaultGame, ...game };
-    },
-    logger: console.log,
+  const [data, setData] = useLocalStorageState<Game>("game", {
+    defaultValue: defaultGame,
   });
 
-  function start() {
+  function startGame() {
     if (data.teams.length < 2) {
       return;
     }
@@ -39,8 +25,14 @@ export default function useGame() {
     setData({ ...data, started: true });
   }
 
-  function stop() {
-    setData({ ...data, started: false });
+  function stopGame() {
+    setData({
+      ...data,
+      started: false,
+      ended: false,
+      currentQuizId: null,
+      results: [],
+    });
   }
 
   function addTeam(name: string) {
@@ -64,7 +56,7 @@ export default function useGame() {
     setData({ ...data, teams: data.teams.filter((team) => team.id !== id) });
   }
 
-  function reset() {
+  function resetGame() {
     setData(defaultGame);
   }
 
@@ -119,18 +111,21 @@ export default function useGame() {
 
   return {
     game: data,
-    reset,
-    start,
-    stop,
+    resetGame,
+    startGame,
+    stopGame,
+
     addTeam,
     renameTeam,
     removeTeam,
+    getCurrentTeam,
+
     startQuiz,
     getCurrentQuiz,
     cancelCurrentQuiz,
     endCurrentQuiz,
+
     getCategory,
     isCategoryPlayed,
-    getCurrentTeam,
   };
 }
