@@ -3,7 +3,6 @@ import { FC } from "react";
 
 import Grid from "./Grid";
 import useGame from "./libs/useGame";
-import Logo from "./Logo";
 import Quiz from "./Quiz";
 import Setup from "./Setup";
 
@@ -21,20 +20,17 @@ function App() {
 
   return (
     <>
-      <div className="flex h-screen flex-col items-center gap-6 p-6">
-        <Logo className="fill-neutral-content h-[15vh]" />
-        <div className="w-full flex-1">
-          <Content />
-        </div>
+      <div className="flex h-screen flex-col items-center gap-6 p-6 pb-16">
+        <Content />
       </div>
 
       {game.started && (
-        <div className="dropdown dropdown-end fixed right-6 top-6">
+        <div className="dropdown dropdown-top dropdown-end fixed bottom-2 right-2">
           <label
             className="btn btn-ghost btn-circle m-1 opacity-10 hover:opacity-60"
             tabIndex={0}
           >
-            <Cog8ToothIcon className="h-8" />
+            <Cog8ToothIcon className="h-6" />
           </label>
           <ul
             className="dropdown-content drpo menu bg-base-200 rounded-box w-52 p-2 text-sm shadow"

@@ -5,6 +5,12 @@ export interface Team {
   name: string;
 }
 
+export interface Category {
+  id: number;
+  name: string;
+  point: Point;
+}
+
 export interface Quiz {
   id: number;
   categoryId: number;

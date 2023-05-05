@@ -1,10 +1,4 @@
-import { Point, Quiz } from "../types";
-
-interface Category {
-  id: number;
-  name: string;
-  point: Point;
-}
+import { Category, Point, Quiz } from "../types";
 
 export const categories: Category[] = [
   { id: 1, point: 10, name: "Psaumes" },
@@ -426,3 +420,11 @@ export const quizzes: Quiz[] = [
     lyrics: [],
   },
 ];
+
+export const categoriesByPoint = categories.reduce<Record<Point, Category[]>>(
+  (acc, curr) => {
+    acc[curr.point].push(curr);
+    return acc;
+  },
+  { 10: [], 20: [], 30: [], 40: [], 50: [] }
+);

@@ -93,7 +93,7 @@ function Quiz() {
   }
 
   return (
-    <div className="flex-center h-full flex-col justify-center gap-4">
+    <div className="flex h-full w-full max-w-4xl flex-col justify-center gap-4">
       <div className="flex-center bg-base-200 relative w-full flex-col gap-8 rounded-2xl p-6 pb-10">
         <button
           className="btn btn-sm btn-circle btn-ghost absolute right-4 top-4 opacity-10 hover:opacity-50"
@@ -127,7 +127,7 @@ function Quiz() {
           >
             <div
               className={clsx(
-                "rounded-lg border border-inherit px-4 py-2 text-2xl uppercase tracking-wide"
+                "rounded-lg border border-inherit px-4 py-2 text-3xl uppercase tracking-wide"
               )}
             >
               {lyricsItem}
