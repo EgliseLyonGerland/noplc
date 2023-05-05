@@ -60,7 +60,17 @@ export const quizzes: Quiz[] = [
     id: 2,
     categoryId: 1,
     title: "Psaume 47",
-    lyrics: [],
+    lyrics: [
+      "Frappez dans vos mains, vous, tous les humains !",
+      "À cris redoublés, peuples assemblés,",
+      "Exultez de joie car voici le Roi.",
+      "Redoutable et doux, Dieu veille sur vous ;",
+      "Son bras souverain, sa puissante main,",
+      "Etend à jamais son règne de paix.",
+      "Si Dieu a choisi Israël pour fils,",
+      "S'il l'a secouru, s'il l'a maintenu,",
+      "C'est pour proclamer par son bien-aimé :",
+    ],
   },
   {
     id: 3,

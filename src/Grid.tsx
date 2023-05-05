@@ -1,4 +1,4 @@
-import { XMarkIcon } from "@heroicons/react/24/outline";
+import { CheckIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 import { useState } from "react";
 
@@ -15,23 +15,31 @@ const colors: Record<Point, string> = {
 };
 
 function Grid() {
-  const { startQuiz } = useGame();
+  const { startQuiz, isCategoryPlayed } = useGame();
   const [selectedCategory, setSelectedCategory] = useState<number>();
 
   return (
     <>
       <div className="grid h-full flex-1 grid-cols-6 grid-rows-5 gap-2">
         {categories.map(({ id, name, point }) => (
-          <button
-            className={clsx(
-              "btn flex-center h-auto rounded-lg border-0 p-2 text-center text-[2.6vh] uppercase leading-tight",
-              colors[point]
+          <div className="relative flex">
+            <button
+              className={clsx(
+                "btn flex-center h-full w-full rounded-lg border-0 p-2 text-center text-[2.6vh] uppercase leading-tight",
+                colors[point]
+              )}
+              disabled={isCategoryPlayed(id)}
+              key={id}
+              onClick={() => setSelectedCategory(id)}
+            >
+              {name}
+            </button>
+            {isCategoryPlayed(id) && (
+              <div className="flex-center absolute h-full w-full">
+                <CheckIcon className="text-success h-[10vh]" />
+              </div>
             )}
-            key={id}
-            onClick={() => setSelectedCategory(id)}
-          >
-            {name}
-          </button>
+          </div>
         ))}
       </div>
 

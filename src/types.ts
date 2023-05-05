@@ -17,9 +17,9 @@ export interface Game {
   started: boolean;
   ended: boolean;
   currentQuizId: number | null;
-  grid: {
+  results: {
     teamId: string;
-    point: Point;
+    categoryId: number;
     success: boolean;
-  }[][];
+  }[];
 }

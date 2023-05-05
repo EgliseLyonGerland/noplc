@@ -10,14 +10,15 @@ import { useHotkeys } from "react-hotkeys-hook";
 import useGame from "./libs/useGame";
 
 function Quiz() {
-  const { stopQuiz, getQuiz, getCategory } = useGame();
+  const { cancelCurrentQuiz, getCurrentQuiz, endCurrentQuiz, getCategory } =
+    useGame();
   const [lyricsIndex, setLyricsIndex] = useState<number>(-1);
   const [answer, setAnswer] = useState("");
   const [locked, setLocked] = useState(false);
   const [result, setResult] = useState<"success" | "fail">();
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const quiz = getQuiz();
+  const quiz = getCurrentQuiz();
 
   useHotkeys(
     "space",
@@ -35,12 +36,33 @@ function Quiz() {
     [quiz, lyricsIndex]
   );
 
-  useHotkeys("y", () => {
-    setResult("success");
-  });
-  useHotkeys("n", () => {
-    setResult("fail");
-  });
+  useHotkeys(
+    "y",
+    () => {
+      if (locked) {
+        setResult("success");
+      }
+    },
+    [locked]
+  );
+  useHotkeys(
+    "n",
+    () => {
+      if (locked) {
+        setResult("fail");
+      }
+    },
+    [locked]
+  );
+  useHotkeys(
+    "enter",
+    () => {
+      if (locked && result) {
+        endCurrentQuiz(result === "success");
+      }
+    },
+    [locked, result]
+  );
 
   useEffect(() => {
     if (quiz && lyricsIndex >= quiz.lyrics.length - 1) {
@@ -75,7 +97,7 @@ function Quiz() {
       <div className="flex-center bg-base-200 relative w-full flex-col gap-8 rounded-2xl p-6 pb-10">
         <button
           className="btn btn-sm btn-circle btn-ghost absolute right-4 top-4 opacity-10 hover:opacity-50"
-          onClick={stopQuiz}
+          onClick={cancelCurrentQuiz}
         >
           <XMarkIcon className="h-8" />
         </button>
@@ -121,6 +143,7 @@ function Quiz() {
         className="fixed -bottom-10"
         onSubmit={(event) => {
           event.preventDefault();
+          event.stopPropagation();
           setLocked(true);
         }}
       >

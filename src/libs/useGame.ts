@@ -6,7 +6,7 @@ import { Game } from "../types";
 
 const defaultGame: Game = {
   teams: [],
-  grid: [],
+  results: [],
   started: false,
   ended: false,
   currentQuizId: null,
@@ -72,16 +72,48 @@ export default function useGame() {
     setData({ ...data, currentQuizId: id });
   }
 
-  function stopQuiz() {
+  function getCurrentTeam() {
+    const lastTeamId = data.results[data.results.length - 1]?.teamId;
+    const index = Math.max(
+      0,
+      data.teams.findIndex((team) => team.id === lastTeamId)
+    );
+
+    return data.teams[index];
+  }
+
+  function getCurrentQuiz() {
+    return quizzes.find((quiz) => quiz.id === data.currentQuizId);
+  }
+
+  function cancelCurrentQuiz() {
     setData({ ...data, currentQuizId: null });
   }
 
-  function getQuiz() {
-    return quizzes.find((quiz) => quiz.id === data.currentQuizId);
+  function endCurrentQuiz(success: boolean) {
+    const currentQuiz = getCurrentQuiz();
+
+    if (!currentQuiz) {
+      return;
+    }
+
+    setData({
+      ...data,
+      results: data.results.concat({
+        teamId: getCurrentTeam().id,
+        categoryId: currentQuiz.categoryId,
+        success,
+      }),
+      currentQuizId: null,
+    });
   }
 
   function getCategory(id: number) {
     return categories.find((category) => category.id === id);
+  }
+
+  function isCategoryPlayed(id: number) {
+    return Boolean(data.results.find((result) => result.categoryId === id));
   }
 
   return {
@@ -93,8 +125,10 @@ export default function useGame() {
     renameTeam,
     removeTeam,
     startQuiz,
-    stopQuiz,
-    getQuiz,
+    getCurrentQuiz,
+    cancelCurrentQuiz,
+    endCurrentQuiz,
     getCategory,
+    isCategoryPlayed,
   };
 }
