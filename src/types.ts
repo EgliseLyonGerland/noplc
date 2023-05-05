@@ -22,7 +22,6 @@ export interface Game {
   teams: Team[];
   started: boolean;
   ended: boolean;
-  currentQuizId: number | null;
   results: {
     teamId: number;
     categoryId: number;

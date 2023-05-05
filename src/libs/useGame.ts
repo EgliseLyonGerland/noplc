@@ -1,6 +1,6 @@
 import useLocalStorageState from "use-local-storage-state";
 
-import { categories, quizzes } from "./config";
+import { categories } from "./config";
 import { Game } from "../types";
 
 const defaultGame: Game = {
@@ -8,7 +8,6 @@ const defaultGame: Game = {
   results: [],
   started: false,
   ended: false,
-  currentQuizId: null,
 };
 
 export default function useGame() {
@@ -25,13 +24,7 @@ export default function useGame() {
   }
 
   function stopGame() {
-    setData({
-      ...data,
-      started: false,
-      ended: false,
-      currentQuizId: null,
-      results: [],
-    });
+    setData({ ...data, started: false, ended: false, results: [] });
   }
 
   function addTeam(name: string) {
@@ -62,10 +55,6 @@ export default function useGame() {
     setData(defaultGame);
   }
 
-  function startQuiz(id: number) {
-    setData({ ...data, currentQuizId: id });
-  }
-
   function getCurrentTeam() {
     const lastTeamId = data.results[data.results.length - 1]?.teamId;
     let index = data.teams.findIndex((team) => team.id === lastTeamId) + 1;
@@ -77,30 +66,16 @@ export default function useGame() {
     return data.teams[index];
   }
 
-  function getCurrentQuiz() {
-    return quizzes.find((quiz) => quiz.id === data.currentQuizId);
-  }
-
-  function cancelCurrentQuiz() {
-    setData({ ...data, currentQuizId: null });
-  }
-
-  function endCurrentQuiz(success: boolean) {
-    const currentQuiz = getCurrentQuiz();
-
-    if (!currentQuiz) {
+  function addResult(categoryId: number, success: boolean) {
+    if (data.results.find((result) => result.categoryId === categoryId)) {
       return;
     }
 
-    setData({
-      ...data,
-      results: data.results.concat({
-        teamId: getCurrentTeam().id,
-        categoryId: currentQuiz.categoryId,
-        success,
-      }),
-      currentQuizId: null,
-    });
+    const teamId = getCurrentTeam().id;
+    const results = data.results.concat({ teamId, categoryId, success });
+    const ended = results.length === categories.length;
+
+    setData({ ...data, results, ended });
   }
 
   function getCategory(id: number) {
@@ -122,11 +97,7 @@ export default function useGame() {
     removeTeam,
     getCurrentTeam,
 
-    startQuiz,
-    getCurrentQuiz,
-    cancelCurrentQuiz,
-    endCurrentQuiz,
-
+    addResult,
     getCategory,
     isCategoryPlayed,
   };

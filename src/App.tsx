@@ -3,15 +3,17 @@ import { FC } from "react";
 
 import Grid from "./Grid";
 import useGame from "./libs/useGame";
+import useQuiz from "./libs/useQuiz";
 import Quiz from "./Quiz";
 import Setup from "./Setup";
 
 function App() {
   const { game, stopGame } = useGame();
+  const { quiz } = useQuiz();
 
   let Content: FC = Setup;
   if (game.started) {
-    if (game.currentQuizId) {
+    if (quiz) {
       Content = Quiz;
     } else {
       Content = Grid;

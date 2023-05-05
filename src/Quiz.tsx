@@ -4,21 +4,17 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import clsx from "clsx";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
 
 import useGame from "./libs/useGame";
+import useQuiz from "./libs/useQuiz";
 
 function Quiz() {
-  const { cancelCurrentQuiz, getCurrentQuiz, endCurrentQuiz, getCategory } =
-    useGame();
-  const [lyricsIndex, setLyricsIndex] = useState<number>(-1);
-  const [answer, setAnswer] = useState("");
-  const [locked, setLocked] = useState(false);
-  const [result, setResult] = useState<"success" | "fail">();
+  const { getCategory, addResult } = useGame();
+  const { quiz, update, lyricsIndex, locked, answer, result, stopQuiz } =
+    useQuiz();
   const inputRef = useRef<HTMLInputElement>(null);
-
-  const quiz = getCurrentQuiz();
 
   useHotkeys(
     "space",
@@ -31,7 +27,7 @@ function Quiz() {
         return;
       }
 
-      setLyricsIndex((index) => index + 1);
+      update({ lyricsIndex: lyricsIndex + 1 });
     },
     [quiz, lyricsIndex]
   );
@@ -40,7 +36,7 @@ function Quiz() {
     "y",
     () => {
       if (locked) {
-        setResult("success");
+        update({ result: "success" });
       }
     },
     [locked]
@@ -49,7 +45,7 @@ function Quiz() {
     "n",
     () => {
       if (locked) {
-        setResult("fail");
+        update({ result: "fail" });
       }
     },
     [locked]
@@ -57,11 +53,12 @@ function Quiz() {
   useHotkeys(
     "enter",
     () => {
-      if (locked && result) {
-        endCurrentQuiz(result === "success");
+      if (quiz && locked && result) {
+        addResult(quiz.categoryId, result === "success");
+        stopQuiz();
       }
     },
-    [locked, result]
+    [quiz, locked, result]
   );
 
   useEffect(() => {
@@ -97,7 +94,7 @@ function Quiz() {
       <div className="flex-center bg-base-200 relative w-full flex-col gap-8 rounded-2xl p-6 pb-10">
         <button
           className="btn btn-sm btn-circle btn-ghost absolute right-4 top-4 opacity-10 hover:opacity-50"
-          onClick={cancelCurrentQuiz}
+          onClick={stopQuiz}
         >
           <XMarkIcon className="h-8" />
         </button>
@@ -144,12 +141,12 @@ function Quiz() {
         onSubmit={(event) => {
           event.preventDefault();
           event.stopPropagation();
-          setLocked(true);
+          update({ locked: true });
         }}
       >
         <input
           disabled={locked}
-          onChange={(event) => setAnswer(event.target.value)}
+          onChange={(event) => update({ answer: event.target.value })}
           ref={inputRef}
           type="text"
           value={answer}

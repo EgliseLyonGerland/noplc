@@ -4,6 +4,7 @@ import { Fragment, useState } from "react";
 
 import { categoriesByPoint, quizzes } from "./libs/config";
 import useGame from "./libs/useGame";
+import useQuiz from "./libs/useQuiz";
 import Logo from "./Logo";
 import { Point } from "./types";
 
@@ -16,7 +17,8 @@ const colors: Record<Point, string> = {
 };
 
 function Grid() {
-  const { startQuiz, isCategoryPlayed, getCurrentTeam } = useGame();
+  const { isCategoryPlayed, getCurrentTeam } = useGame();
+  const { startQuiz } = useQuiz();
   const [selectedCategory, setSelectedCategory] = useState<number>();
 
   const currentTeam = getCurrentTeam();
