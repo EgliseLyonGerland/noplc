@@ -30,14 +30,19 @@ function Grid() {
           <div className="relative flex" key={id}>
             <button
               className={clsx(
-                "btn flex-center h-full w-full rounded-lg border-0 p-2 text-center text-[2.6vh] uppercase leading-tight",
+                "btn flex-center h-full w-full flex-col gap-2 rounded-lg border-0 p-2",
                 colors[point]
               )}
               disabled={isCategoryPlayed(id)}
               key={id}
               onClick={() => setSelectedCategory(id)}
             >
-              {name}
+              <span className="badge badge-sm badge-outline text-xs normal-case opacity-30">
+                {point} pts
+              </span>
+              <span className="flex-center flex-1 text-center text-[2.4vh] uppercase leading-tight">
+                {name}
+              </span>
             </button>
             {isCategoryPlayed(id) && (
               <div className="flex-center absolute h-full w-full">
