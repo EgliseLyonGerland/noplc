@@ -1,11 +1,13 @@
-import { CheckIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { XMarkIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 import { Fragment, useState } from "react";
+import useLocalStorageState from "use-local-storage-state";
 
 import { categoriesByPoint, quizzes } from "./libs/config";
 import useGame from "./libs/useGame";
 import useQuiz from "./libs/useQuiz";
 import Logo from "./Logo";
+import Results from "./Results";
 import { Point } from "./types";
 
 const colors: Record<Point, string> = {
@@ -17,9 +19,12 @@ const colors: Record<Point, string> = {
 };
 
 function Grid() {
-  const { isCategoryPlayed, getCurrentTeam } = useGame();
+  const { game, isCategoryPlayed, getCurrentTeam } = useGame();
   const { startQuiz } = useQuiz();
   const [selectedCategory, setSelectedCategory] = useState<number>();
+  const [showResults, setShowResults] = useLocalStorageState("showResults", {
+    defaultValue: false,
+  });
 
   const currentTeam = getCurrentTeam();
 
@@ -49,11 +54,6 @@ function Grid() {
                           {name}
                         </span>
                       </button>
-                      {isCategoryPlayed(id) && (
-                        <div className="flex-center absolute h-full w-full">
-                          <CheckIcon className="text-success h-[10vh]" />
-                        </div>
-                      )}
                     </div>
                   ))}
                 </div>
@@ -62,12 +62,21 @@ function Grid() {
                     <Logo className="fill-neutral-content h-[15vh]" />
 
                     <div className="flex-center flex-1">
-                      <h3 className="badge badge-primary badge-outline badge-lg px-4 py-6 text-2xl">
-                        Équipe{" "}
-                        <span className="ml-2 font-bold uppercase">
-                          {currentTeam.name}
-                        </span>
-                      </h3>
+                      {game.ended ? (
+                        <button
+                          className="btn btn-xl btn-primary"
+                          onClick={() => setShowResults(true)}
+                        >
+                          Afficher les résultats
+                        </button>
+                      ) : (
+                        <h3 className="badge badge-primary badge-outline badge-lg px-4 py-6 text-2xl">
+                          Équipe
+                          <span className="ml-2 font-bold uppercase">
+                            {currentTeam.name}
+                          </span>
+                        </h3>
+                      )}
                     </div>
                   </div>
                 )}
@@ -76,6 +85,18 @@ function Grid() {
           )}
         </div>
       </div>
+
+      {showResults && (
+        <div className="bg-base-100 fixed left-0 top-0 h-screen w-screen">
+          <button
+            className="btn btn-sm btn-circle absolute right-4 top-4"
+            onClick={() => setShowResults(false)}
+          >
+            <XMarkIcon />
+          </button>
+          <Results />
+        </div>
+      )}
 
       <input
         checked={Boolean(selectedCategory)}

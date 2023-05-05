@@ -428,3 +428,11 @@ export const categoriesByPoint = categories.reduce<Record<Point, Category[]>>(
   },
   { 10: [], 20: [], 30: [], 40: [], 50: [] }
 );
+
+export const pointByCategory = categories.reduce<Record<number, Point>>(
+  (acc, curr) => {
+    acc[curr.id] = curr.point;
+    return acc;
+  },
+  {}
+);
