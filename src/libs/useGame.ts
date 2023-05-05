@@ -1,5 +1,4 @@
 import useLocalStorageState from "use-local-storage-state";
-import { v4 as uuid } from "uuid";
 
 import { categories, quizzes } from "./config";
 import { Game } from "../types";
@@ -36,10 +35,13 @@ export default function useGame() {
   }
 
   function addTeam(name: string) {
-    setData({ ...data, teams: data.teams.concat({ id: uuid(), name }) });
+    setData({
+      ...data,
+      teams: data.teams.concat({ id: data.teams.length + 1, name }),
+    });
   }
 
-  function renameTeam(id: string, name: string) {
+  function renameTeam(id: number, name: string) {
     setData({
       ...data,
       teams: data.teams.map((team) => {
@@ -52,7 +54,7 @@ export default function useGame() {
     });
   }
 
-  function removeTeam(id: string) {
+  function removeTeam(id: number) {
     setData({ ...data, teams: data.teams.filter((team) => team.id !== id) });
   }
 

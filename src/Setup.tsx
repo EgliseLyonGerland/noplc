@@ -13,7 +13,7 @@ function Setup() {
       <Logo className="fill-neutral-content h-[15vh]" />
 
       <div className="grid w-80 grid-flow-row-dense grid-cols-5 gap-2">
-        {game.teams.concat({ id: "", name: "" }).map((team, index) => (
+        {game.teams.concat({ id: 0, name: "" }).map((team, index) => (
           <Fragment key={`row-${index}`}>
             <input
               className="input input-bordered input-primary col-span-4 w-full"

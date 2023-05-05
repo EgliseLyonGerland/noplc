@@ -1,7 +1,7 @@
 export type Point = 10 | 20 | 30 | 40 | 50;
 
 export interface Team {
-  id: string;
+  id: number;
   name: string;
 }
 
@@ -24,7 +24,7 @@ export interface Game {
   ended: boolean;
   currentQuizId: number | null;
   results: {
-    teamId: string;
+    teamId: number;
     categoryId: number;
     success: boolean;
   }[];
