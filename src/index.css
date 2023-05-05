@@ -16,7 +16,13 @@
   }
 }
 
+:root {
+  --base-font-size: 24px;
+  --base-font-family: "Roboto Condensed", sans-serif;
+}
+
 html {
   @apply font-roboto;
-  font-size: 24px;
+  font-family: var(--base-font-family);
+  font-size: var(--base-font-size);
 }
