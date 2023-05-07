@@ -1,71 +1,16 @@
 import {
   CheckCircleIcon,
+  LockClosedIcon,
   XCircleIcon,
-  XMarkIcon,
 } from "@heroicons/react/24/outline";
 import clsx from "clsx";
-import { useEffect, useRef } from "react";
-import { useHotkeys } from "react-hotkeys-hook";
 
 import useGame from "./libs/useGame";
 import useQuiz from "./libs/useQuiz";
 
 function Quiz() {
-  const { getCategory, addResult } = useGame();
-  const { quiz, update, lyricsIndex, locked, answer, result, stopQuiz } =
-    useQuiz();
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  useHotkeys(
-    "space",
-    () => {
-      if (!quiz) {
-        return;
-      }
-      if (lyricsIndex >= quiz.lyrics.length - 1) {
-        inputRef.current?.focus();
-        return;
-      }
-
-      update({ lyricsIndex: lyricsIndex + 1 });
-    },
-    [quiz, lyricsIndex]
-  );
-
-  useHotkeys(
-    "y",
-    () => {
-      if (locked) {
-        update({ result: "success" });
-      }
-    },
-    [locked]
-  );
-  useHotkeys(
-    "n",
-    () => {
-      if (locked) {
-        update({ result: "fail" });
-      }
-    },
-    [locked]
-  );
-  useHotkeys(
-    "enter",
-    () => {
-      if (quiz && locked && result) {
-        addResult(quiz.categoryId, result === "success");
-        stopQuiz();
-      }
-    },
-    [quiz, locked, result]
-  );
-
-  useEffect(() => {
-    if (quiz && lyricsIndex >= quiz.lyrics.length - 1) {
-      inputRef.current?.focus();
-    }
-  }, [lyricsIndex, quiz]);
+  const { getCategory } = useGame();
+  const { quiz, lyricsIndex, locked, answer, result } = useQuiz();
 
   if (!quiz) {
     return null;
@@ -92,12 +37,6 @@ function Quiz() {
   return (
     <div className="flex h-full w-full max-w-4xl flex-col justify-center gap-4">
       <div className="flex-center bg-base-200 relative w-full flex-col gap-8 rounded-2xl p-6 pb-10">
-        <button
-          className="btn btn-sm btn-circle btn-ghost absolute right-4 top-4 opacity-10 hover:opacity-50"
-          onClick={stopQuiz}
-        >
-          <XMarkIcon className="h-8" />
-        </button>
         <div className="flex gap-2">
           <div className="badge badge-secondary badge-outline badge-lg">
             {category?.name}
@@ -130,28 +69,16 @@ function Quiz() {
               {lyricsItem}
             </div>
 
-            {result === "success" && <CheckCircleIcon className="h-12" />}
-            {result === "fail" && <XCircleIcon className="h-12" />}
+            {result === "success" ? (
+              <CheckCircleIcon className="h-12" />
+            ) : result === "fail" ? (
+              <XCircleIcon className="h-12" />
+            ) : locked ? (
+              <LockClosedIcon className="h-12" />
+            ) : null}
           </div>
         )}
       </div>
-
-      <form
-        className="fixed -bottom-10"
-        onSubmit={(event) => {
-          event.preventDefault();
-          event.stopPropagation();
-          update({ locked: true });
-        }}
-      >
-        <input
-          disabled={locked}
-          onChange={(event) => update({ answer: event.target.value })}
-          ref={inputRef}
-          type="text"
-          value={answer}
-        />
-      </form>
     </div>
   );
 }

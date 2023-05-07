@@ -50,7 +50,10 @@ export default function GridPanel() {
                 <button
                   className="btn"
                   key={quiz.id}
-                  onClick={() => startQuiz(quiz.id)}
+                  onClick={() => {
+                    set({ currentCategory: null });
+                    startQuiz(quiz.id);
+                  }}
                 >
                   {quiz.title}
                 </button>

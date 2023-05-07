@@ -1,6 +1,7 @@
 import { Cog8ToothIcon } from "@heroicons/react/24/outline";
 
 import GridPanel from "./Controls/GridPanel";
+import QuizPanel from "./Controls/QuizPanel";
 import TeamsPanel from "./Controls/TeamsPanel";
 import useGame from "./libs/useGame";
 import useQuiz from "./libs/useQuiz";
@@ -51,6 +52,8 @@ export default function Controls() {
           <TeamsPanel />
         ) : panel === "grid" ? (
           <GridPanel />
+        ) : panel === "quiz" ? (
+          <QuizPanel />
         ) : null}
       </div>
     </div>
