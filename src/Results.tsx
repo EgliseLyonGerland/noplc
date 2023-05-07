@@ -48,9 +48,12 @@ function Results() {
             >
               <div
                 className="w-16 bg-red-500 py-2 text-center text-xl text-white"
-                style={{ height: `${(pointByTeam[team.id] * 100) / max}%` }}
+                style={{
+                  minHeight: "2.2em",
+                  height: `${(pointByTeam[team.id] * 100) / max}%`,
+                }}
               >
-                {pointByTeam[team.id]}
+                {pointByTeam[team.id] || 0}
               </div>
             </div>
           ))}
