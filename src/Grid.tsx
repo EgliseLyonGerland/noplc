@@ -7,12 +7,12 @@ import Logo from "./Logo";
 import Results from "./Results";
 import { Point } from "./types";
 
-const colors: Record<Point, string> = {
-  10: clsx("bg-sky-600"),
-  20: clsx("bg-teal-600"),
-  30: clsx("bg-lime-600"),
-  40: clsx("bg-orange-600"),
-  50: clsx("bg-rose-600"),
+const colors: Record<Point, [string, string]> = {
+  10: [clsx("bg-sky-600"), clsx("bg-sky-700")],
+  20: [clsx("bg-teal-600"), clsx("bg-teal-700")],
+  30: [clsx("bg-lime-600"), clsx("bg-lime-700")],
+  40: [clsx("bg-orange-600"), clsx("bg-orange-700")],
+  50: [clsx("bg-rose-600"), clsx("bg-rose-700")],
 };
 
 function Grid() {
@@ -27,6 +27,24 @@ function Grid() {
           {Object.entries(categoriesByPoint).map(
             ([point, categories], index) => (
               <Fragment key={point}>
+                {index === 0 && (
+                  <div className="flex flex-col items-center gap-8">
+                    <div>
+                      <Logo className="fill-neutral-content h-[15vh]" />
+                    </div>
+
+                    {!game.ended && (
+                      <div className="border-primary flex-center w-full flex-1 rounded-lg border">
+                        <span className="text-5xl leading-none">
+                          {currentTeam.emoji}
+                        </span>
+                        <div className="whitespace-nowrap p-2 px-6 text-center text-4xl uppercase">
+                          {currentTeam.name}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
                 <div className="grid grid-cols-2 grid-rows-3 gap-3">
                   {categories.map(({ id, name, point }) => (
                     <div className="relative flex" key={id}>
@@ -36,10 +54,15 @@ function Grid() {
                           game.currentCategory === id && "outline outline-4",
                           isCategoryPlayed(id)
                             ? "bg-neutral opacity-30"
-                            : colors[point]
+                            : colors[point][0]
                         )}
                       >
-                        <span className="badge badge-sm badge-outline text-xs normal-case opacity-30">
+                        <span
+                          className={clsx(
+                            "rounded-full px-2 text-xs normal-case opacity-70",
+                            colors[point][1]
+                          )}
+                        >
                           {point} pts
                         </span>
                         <span className="flex-center flex-1 text-center text-[2.4vh] uppercase leading-tight">
@@ -49,22 +72,6 @@ function Grid() {
                     </div>
                   ))}
                 </div>
-                {index === 0 && (
-                  <div className="flex flex-col items-center justify-between">
-                    <Logo className="fill-neutral-content h-[15vh]" />
-
-                    {!game.ended && (
-                      <div className="flex-center flex-1">
-                        <h3 className="badge badge-primary badge-outline badge-lg px-4 py-6 text-2xl">
-                          Équipe
-                          <span className="ml-2 font-bold uppercase">
-                            {currentTeam.name}
-                          </span>
-                        </h3>
-                      </div>
-                    )}
-                  </div>
-                )}
               </Fragment>
             )
           )}

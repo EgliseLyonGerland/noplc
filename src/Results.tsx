@@ -61,7 +61,8 @@ function Results() {
         <div className="flex w-full py-4">
           {game.teams.map((team) => (
             <div className="flex-center flex-1" key={team.id}>
-              <div className="badge badge-lg badge-outline p-4">
+              <div className="badge badge-lg badge-outline p-4 text-xl">
+                <span className="mr-2 text-2xl">{team.emoji}</span>
                 {team.name}
               </div>
             </div>
@@ -69,13 +70,15 @@ function Results() {
         </div>
       </div>
 
-      <div className="border-neutral-content rounded-lg border p-4 px-6 text-3xl">
-        {winners.length > 1 ? (
-          <div>Les équipes {winners.join(", ")} gagnent ! 🎉</div>
-        ) : (
-          <div>L'équipe {winners[0]} gagne ! 🎉</div>
-        )}
-      </div>
+      {winners.length > 0 && game.ended && (
+        <div className="border-neutral-content rounded-lg border p-4 px-6 text-3xl">
+          {winners.length > 1 ? (
+            <div>Les équipes {winners.join(", ")} gagnent ! 🎉</div>
+          ) : (
+            <div>L'équipe {winners[0]} gagne ! 🎉</div>
+          )}
+        </div>
+      )}
     </div>
   );
 }

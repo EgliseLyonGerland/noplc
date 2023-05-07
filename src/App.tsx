@@ -25,11 +25,9 @@ function App() {
   }
 
   return (
-    <>
-      <div className="flex h-screen flex-col items-center gap-6 p-6">
-        <Content />
-      </div>
-    </>
+    <div className="flex h-screen flex-col items-center gap-6 p-6">
+      <Content />
+    </div>
   );
 }
 

@@ -33,8 +33,10 @@ export default function useGame() {
     set({ started: false, ended: false, results: [] });
   }
 
-  function addTeam(name: string) {
-    set({ teams: data.teams.concat({ id: data.teams.length + 1, name }) });
+  function addTeam(name: string, emoji: string) {
+    set({
+      teams: data.teams.concat({ id: data.teams.length + 1, name, emoji }),
+    });
   }
 
   function renameTeam(id: number, name: string) {

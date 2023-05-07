@@ -21,6 +21,10 @@
   --base-font-family: "Roboto Condensed", sans-serif;
 }
 
+.EmojiPickerReact {
+  --epr-bg-color: black;
+}
+
 html {
   @apply font-roboto;
   font-family: var(--base-font-family);
