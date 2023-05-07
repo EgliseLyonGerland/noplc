@@ -11,7 +11,7 @@ function App() {
   const { game } = useGame();
   const { quiz } = useQuiz();
 
-  if (window.location.href.includes("/controls")) {
+  if (window.location.hash === "#controls") {
     return <Controls />;
   }
 
