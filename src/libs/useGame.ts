@@ -8,6 +8,8 @@ const defaultGame: Game = {
   results: [],
   started: false,
   ended: false,
+  currentCategory: null,
+  resultsShown: false,
 };
 
 export default function useGame() {
@@ -15,28 +17,28 @@ export default function useGame() {
     defaultValue: defaultGame,
   });
 
+  function set(newData: Partial<Game>) {
+    setData({ ...data, ...newData });
+  }
+
   function startGame() {
     if (data.teams.length < 2) {
       return;
     }
 
-    setData({ ...data, started: true });
+    set({ started: true });
   }
 
   function stopGame() {
-    setData({ ...data, started: false, ended: false, results: [] });
+    set({ started: false, ended: false, results: [] });
   }
 
   function addTeam(name: string) {
-    setData({
-      ...data,
-      teams: data.teams.concat({ id: data.teams.length + 1, name }),
-    });
+    set({ teams: data.teams.concat({ id: data.teams.length + 1, name }) });
   }
 
   function renameTeam(id: number, name: string) {
-    setData({
-      ...data,
+    set({
       teams: data.teams.map((team) => {
         if (team.id === id) {
           team.name = name;
@@ -48,7 +50,7 @@ export default function useGame() {
   }
 
   function removeTeam(id: number) {
-    setData({ ...data, teams: data.teams.filter((team) => team.id !== id) });
+    set({ teams: data.teams.filter((team) => team.id !== id) });
   }
 
   function resetGame() {
@@ -75,7 +77,7 @@ export default function useGame() {
     const results = data.results.concat({ teamId, categoryId, success });
     const ended = results.length === categories.length;
 
-    setData({ ...data, results, ended });
+    set({ results, ended });
   }
 
   function getCategory(id: number) {
@@ -88,6 +90,9 @@ export default function useGame() {
 
   return {
     game: data,
+
+    set,
+
     resetGame,
     startGame,
     stopGame,

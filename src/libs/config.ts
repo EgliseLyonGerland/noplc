@@ -421,6 +421,14 @@ export const quizzes: Quiz[] = [
   },
 ];
 
+export const colorByPoint: Record<Point, string> = {
+  10: "sky",
+  20: "teal",
+  30: "lime",
+  40: "orange",
+  50: "rose",
+};
+
 export const categoriesByPoint = categories.reduce<Record<Point, Category[]>>(
   (acc, curr) => {
     acc[curr.point].push(curr);
