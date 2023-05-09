@@ -59,13 +59,13 @@ function Grid() {
                       >
                         <span
                           className={clsx(
-                            "rounded-full px-2 text-xs normal-case opacity-70",
+                            "rounded-full px-2 text-[1.8vh] normal-case opacity-70",
                             colors[point][1]
                           )}
                         >
                           {point} pts
                         </span>
-                        <span className="flex-center flex-1 text-center text-[2.4vh] uppercase leading-tight">
+                        <span className="flex-center flex-1 text-center text-[min(2.7vh,2vw)] uppercase leading-tight">
                           {name}
                         </span>
                       </div>
