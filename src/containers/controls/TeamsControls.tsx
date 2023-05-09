@@ -6,14 +6,14 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import useGame from "../libs/useGame";
+import useGame from "../../libs/useGame";
 
 const teamSchema = z.object({
   name: z.string().min(1),
   emoji: z.string().min(1),
 });
 
-export default function TeamsPanel() {
+export default function TeamsControls() {
   const { game, startGame, addTeam, removeTeam } = useGame();
   const [emojiPickerOpened, setEmojiPickerOpened] = useState(false);
 

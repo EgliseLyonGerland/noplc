@@ -1,11 +1,11 @@
 import { Cog8ToothIcon } from "@heroicons/react/24/outline";
 
-import GridPanel from "./Controls/GridPanel";
-import QuizPanel from "./Controls/QuizPanel";
-import TeamsPanel from "./Controls/TeamsPanel";
-import useGame from "./libs/useGame";
-import useQuiz from "./libs/useQuiz";
-import Logo from "./Logo";
+import GridControls from "./controls/GridControls";
+import QuizControls from "./controls/QuizControls";
+import TeamsControls from "./controls/TeamsControls";
+import Logo from "../components/Logo";
+import useGame from "../libs/useGame";
+import useQuiz from "../libs/useQuiz";
 
 export default function Controls() {
   const { game, stopGame } = useGame();
@@ -49,11 +49,11 @@ export default function Controls() {
       </div>
       <div className="p-4">
         {panel === "teams" ? (
-          <TeamsPanel />
+          <TeamsControls />
         ) : panel === "grid" ? (
-          <GridPanel />
+          <GridControls />
         ) : panel === "quiz" ? (
-          <QuizPanel />
+          <QuizControls />
         ) : null}
       </div>
     </div>

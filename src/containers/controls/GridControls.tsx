@@ -1,10 +1,14 @@
 import clsx from "clsx";
 
-import { categoriesByPoint, colorsByCategories, quizzes } from "../libs/config";
-import useGame from "../libs/useGame";
-import useQuiz from "../libs/useQuiz";
+import {
+  categoriesByPoint,
+  colorsByCategories,
+  quizzes,
+} from "../../libs/config";
+import useGame from "../../libs/useGame";
+import useQuiz from "../../libs/useQuiz";
 
-export default function GridPanel() {
+export default function GridControls() {
   const { game, set, isCategoryPlayed } = useGame();
   const { startQuiz } = useQuiz();
 

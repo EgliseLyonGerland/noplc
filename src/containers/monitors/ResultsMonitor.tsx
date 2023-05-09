@@ -1,10 +1,10 @@
 import { useMemo } from "react";
 
-import { pointByCategory } from "./libs/config";
-import useGame from "./libs/useGame";
-import Logo from "./Logo";
+import Logo from "../../components/Logo";
+import { pointByCategory } from "../../libs/config";
+import useGame from "../../libs/useGame";
 
-function Results() {
+function ResultsMonitor() {
   const { game } = useGame();
 
   const pointByTeam = useMemo(() => {
@@ -83,4 +83,4 @@ function Results() {
   );
 }
 
-export default Results;
+export default ResultsMonitor;

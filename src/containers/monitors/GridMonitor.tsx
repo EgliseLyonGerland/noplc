@@ -1,12 +1,16 @@
 import clsx from "clsx";
 import { Fragment } from "react";
 
-import { categoriesByPoint, colorsByCategories, quizzes } from "./libs/config";
-import useGame from "./libs/useGame";
-import Logo from "./Logo";
-import Results from "./Results";
+import ResultsMonitor from "./ResultsMonitor";
+import Logo from "../../components/Logo";
+import {
+  categoriesByPoint,
+  colorsByCategories,
+  quizzes,
+} from "../../libs/config";
+import useGame from "../../libs/useGame";
 
-function Grid() {
+function GridMonitor() {
   const { game, isCategoryPlayed, getCurrentTeam } = useGame();
 
   const currentTeam = getCurrentTeam();
@@ -73,7 +77,7 @@ function Grid() {
 
       {game.resultsShown && (
         <div className="bg-base-100 fixed left-0 top-0 h-screen w-screen">
-          <Results />
+          <ResultsMonitor />
         </div>
       )}
 
@@ -104,4 +108,4 @@ function Grid() {
   );
 }
 
-export default Grid;
+export default GridMonitor;

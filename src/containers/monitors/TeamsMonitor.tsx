@@ -1,8 +1,8 @@
-import Team from "./components/Team";
-import useGame from "./libs/useGame";
-import Logo from "./Logo";
+import Logo from "../../components/Logo";
+import Team from "../../components/Team";
+import useGame from "../../libs/useGame";
 
-function Teams() {
+function TeamsMonitor() {
   const { game } = useGame();
 
   return (
@@ -22,4 +22,4 @@ function Teams() {
   );
 }
 
-export default Teams;
+export default TeamsMonitor;

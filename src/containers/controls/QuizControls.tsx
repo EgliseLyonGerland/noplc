@@ -1,7 +1,7 @@
-import useGame from "../libs/useGame";
-import useQuiz from "../libs/useQuiz";
+import useGame from "../../libs/useGame";
+import useQuiz from "../../libs/useQuiz";
 
-export default function QuizPanel() {
+export default function QuizControls() {
   const { addResult } = useGame();
   const { quiz, update, lyricsIndex, answer, status, stopQuiz } = useQuiz();
 

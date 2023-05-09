@@ -1,8 +1,8 @@
-import Lyrics from "./components/Lyrics";
-import useGame from "./libs/useGame";
-import useQuiz from "./libs/useQuiz";
+import Lyrics from "../../components/Lyrics";
+import useGame from "../../libs/useGame";
+import useQuiz from "../../libs/useQuiz";
 
-function Quiz() {
+function QuizMonitor() {
   const { getCategory } = useGame();
   const { quiz, lyricsIndex, answer, status } = useQuiz();
 
@@ -48,4 +48,4 @@ function Quiz() {
   );
 }
 
-export default Quiz;
+export default QuizMonitor;
