@@ -3,8 +3,7 @@ import useQuiz from "../libs/useQuiz";
 
 export default function QuizPanel() {
   const { addResult } = useGame();
-  const { quiz, update, lyricsIndex, locked, answer, result, stopQuiz } =
-    useQuiz();
+  const { quiz, update, lyricsIndex, answer, status, stopQuiz } = useQuiz();
 
   if (!quiz) {
     return null;
@@ -50,6 +49,7 @@ export default function QuizPanel() {
       >
         <input
           className="input input-bordered input-primary w-full max-w-xs"
+          defaultValue={answer}
           disabled={!isLast}
           name="name"
           placeholder="Résponse"
@@ -61,24 +61,28 @@ export default function QuizPanel() {
         <button
           className="btn"
           disabled={!isLast || !answer}
-          onClick={() => update({ locked: !locked, result: "idle" })}
+          onClick={() =>
+            update({ status: status === "idle" ? "locked" : "idle" })
+          }
         >
-          {locked ? "Déverrouiller les paroles" : "Verrouiller les paroles"}
+          {status !== "idle"
+            ? "Déverrouiller les paroles"
+            : "Verrouiller les paroles"}
         </button>
       </div>
       <div className="divider"></div>
       <div className="flex gap-4">
         <button
           className="btn"
-          disabled={!isLast || !answer || !locked}
-          onClick={() => update({ result: "success" })}
+          disabled={status === "idle" || status === "success"}
+          onClick={() => update({ status: "success" })}
         >
           Bonne réponse
         </button>
         <button
           className="btn"
-          disabled={!isLast || !answer || !locked}
-          onClick={() => update({ result: "fail" })}
+          disabled={status === "idle" || status === "fail"}
+          onClick={() => update({ status: "fail" })}
         >
           Mauvaise réponse
         </button>
@@ -87,9 +91,9 @@ export default function QuizPanel() {
       <div className="flex gap-4">
         <button
           className="btn"
-          disabled={result === "idle"}
+          disabled={status === "idle" || status === "locked"}
           onClick={() => {
-            addResult(quiz.categoryId, result === "success");
+            addResult(quiz.categoryId, status === "success");
             stopQuiz();
           }}
         >

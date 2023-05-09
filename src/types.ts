@@ -31,3 +31,12 @@ export interface Game {
     success: boolean;
   }[];
 }
+
+export type LyricsState = "idle" | "locked" | "success" | "fail";
+
+export interface QuizState {
+  quizId: number | null;
+  lyricsIndex: number;
+  answer: string;
+  status: LyricsState;
+}

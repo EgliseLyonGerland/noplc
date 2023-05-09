@@ -1,21 +1,13 @@
 import useLocalStorageState from "use-local-storage-state";
 
 import { quizzes } from "./config";
-
-interface QuizState {
-  quizId: number | null;
-  lyricsIndex: number;
-  locked: boolean;
-  answer: string;
-  result: "success" | "fail" | "idle";
-}
+import { QuizState } from "../types";
 
 const defaultState: QuizState = {
   quizId: null,
   lyricsIndex: -1,
-  locked: false,
   answer: "",
-  result: "idle",
+  status: "idle",
 };
 
 export default function useQuiz() {
@@ -29,9 +21,8 @@ export default function useQuiz() {
     setState({
       quizId: id,
       lyricsIndex: -1,
-      locked: false,
       answer: "",
-      result: "idle",
+      status: "idle",
     });
   };
 

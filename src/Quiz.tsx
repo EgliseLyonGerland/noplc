@@ -1,16 +1,10 @@
-import {
-  CheckCircleIcon,
-  LockClosedIcon,
-  XCircleIcon,
-} from "@heroicons/react/24/outline";
-import clsx from "clsx";
-
+import Lyrics from "./components/Lyrics";
 import useGame from "./libs/useGame";
 import useQuiz from "./libs/useQuiz";
 
 function Quiz() {
   const { getCategory } = useGame();
-  const { quiz, lyricsIndex, locked, answer, result } = useQuiz();
+  const { quiz, lyricsIndex, answer, status } = useQuiz();
 
   if (!quiz) {
     return null;
@@ -18,21 +12,12 @@ function Quiz() {
 
   const category = getCategory(quiz.categoryId);
 
-  let lyricsItem: string | null = null;
+  let lyricsItem = "";
   if (lyricsIndex > -1) {
     lyricsItem = quiz.lyrics[lyricsIndex];
   }
 
   const isLast = lyricsIndex === quiz.lyrics.length - 1;
-
-  if (isLast) {
-    lyricsItem = answer.trim()
-      ? answer
-      : lyricsItem
-          ?.normalize("NFD")
-          .replace(/[\u0300-\u036f]/g, "")
-          .replace(/\w+/g, "＿＿") || null;
-  }
 
   return (
     <div className="flex h-full w-full max-w-4xl flex-col justify-center gap-4">
@@ -47,36 +32,16 @@ function Quiz() {
         </div>
         <h3 className="text-4xl">{quiz.title}</h3>
       </div>
-      <div className="flex-center flex-1">
+      <div className="flex-center flex-1 flex-col gap-12">
         {lyricsItem && (
-          <div
-            className={clsx(
-              "flex-center gap-4",
-              result === "success"
-                ? "border-green-500 text-green-500"
-                : result === "fail"
-                ? "border-red-500 text-red-500"
-                : locked
-                ? "border-yellow-300 text-yellow-300"
-                : "text-neutral-content border-neutral-content"
-            )}
-          >
-            <div
-              className={clsx(
-                "rounded-lg border border-inherit px-4 py-2 text-3xl uppercase tracking-wide"
-              )}
-            >
-              {lyricsItem}
-            </div>
-
-            {result === "success" ? (
-              <CheckCircleIcon className="h-12" />
-            ) : result === "fail" ? (
-              <XCircleIcon className="h-12" />
-            ) : locked ? (
-              <LockClosedIcon className="h-12" />
-            ) : null}
-          </div>
+          <Lyrics
+            hidden={isLast && !answer}
+            status={status}
+            text={status === "success" ? lyricsItem : answer || lyricsItem}
+          />
+        )}
+        {isLast && status === "fail" && (
+          <Lyrics className="scale-[80%] opacity-80" text={lyricsItem} />
         )}
       </div>
     </div>
