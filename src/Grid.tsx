@@ -8,11 +8,11 @@ import Results from "./Results";
 import { Point } from "./types";
 
 const colors: Record<Point, [string, string]> = {
-  10: [clsx("bg-sky-600"), clsx("bg-sky-700")],
-  20: [clsx("bg-teal-600"), clsx("bg-teal-700")],
-  30: [clsx("bg-lime-600"), clsx("bg-lime-700")],
-  40: [clsx("bg-orange-600"), clsx("bg-orange-700")],
-  50: [clsx("bg-rose-600"), clsx("bg-rose-700")],
+  10: [clsx("bg-sky-600/80"), clsx("bg-sky-400/50")],
+  20: [clsx("bg-teal-600/80"), clsx("bg-teal-400/50")],
+  30: [clsx("bg-lime-600/80"), clsx("bg-lime-400/50")],
+  40: [clsx("bg-orange-600/80"), clsx("bg-orange-400/50")],
+  50: [clsx("bg-rose-600/80"), clsx("bg-rose-400/50")],
 };
 
 function Grid() {
@@ -50,7 +50,7 @@ function Grid() {
                     <div className="relative flex" key={id}>
                       <div
                         className={clsx(
-                          "flex-center h-full w-full flex-col gap-2 rounded-lg border-0 p-2 text-white",
+                          "flex-center bg-base-200 h-full w-full flex-col gap-2 rounded-lg p-2 text-white",
                           game.currentCategory === id && "outline outline-4",
                           isCategoryPlayed(id)
                             ? "bg-neutral opacity-30"
@@ -60,7 +60,9 @@ function Grid() {
                         <span
                           className={clsx(
                             "rounded-full px-2 text-[1.8vh] normal-case opacity-70",
-                            colors[point][1]
+                            isCategoryPlayed(id)
+                              ? "bg-base-200"
+                              : colors[point][1]
                           )}
                         >
                           {point} pts
