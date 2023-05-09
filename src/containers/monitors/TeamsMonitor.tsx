@@ -2,7 +2,7 @@ import Logo from "../../components/Logo";
 import Team from "../../components/Team";
 import useGame from "../../libs/useGame";
 
-function TeamsMonitor() {
+export default function TeamsMonitor() {
   const { game } = useGame();
 
   return (
@@ -21,5 +21,3 @@ function TeamsMonitor() {
     </div>
   );
 }
-
-export default TeamsMonitor;

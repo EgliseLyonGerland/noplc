@@ -22,7 +22,12 @@ interface Props {
   className?: string;
 }
 
-function Lyrics({ text, status = "idle", hidden = false, className }: Props) {
+export default function Lyrics({
+  text,
+  status = "idle",
+  hidden = false,
+  className,
+}: Props) {
   return (
     <div
       className={clsx(
@@ -57,5 +62,3 @@ function Lyrics({ text, status = "idle", hidden = false, className }: Props) {
     </div>
   );
 }
-
-export default Lyrics;

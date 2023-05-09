@@ -4,7 +4,7 @@ import Logo from "../../components/Logo";
 import { pointByCategory } from "../../libs/config";
 import useGame from "../../libs/useGame";
 
-function ResultsMonitor() {
+export default function ResultsMonitor() {
   const { game } = useGame();
 
   const pointByTeam = useMemo(() => {
@@ -82,5 +82,3 @@ function ResultsMonitor() {
     </div>
   );
 }
-
-export default ResultsMonitor;

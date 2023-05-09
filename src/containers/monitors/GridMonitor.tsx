@@ -10,7 +10,7 @@ import {
 } from "../../libs/config";
 import useGame from "../../libs/useGame";
 
-function GridMonitor() {
+export default function GridMonitor() {
   const { game, isCategoryPlayed, getCurrentTeam } = useGame();
 
   const currentTeam = getCurrentTeam();
@@ -107,5 +107,3 @@ function GridMonitor() {
     </>
   );
 }
-
-export default GridMonitor;

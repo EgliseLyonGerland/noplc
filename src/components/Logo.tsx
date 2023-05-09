@@ -1,6 +1,6 @@
 import clsx from "clsx";
 
-function Logo({ className }: { className?: string }) {
+export default function Logo({ className }: { className?: string }) {
   return (
     <svg
       className={clsx(className)}
@@ -15,5 +15,3 @@ function Logo({ className }: { className?: string }) {
     </svg>
   );
 }
-
-export default Logo;

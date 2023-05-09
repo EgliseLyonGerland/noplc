@@ -2,7 +2,7 @@ import Lyrics from "../../components/Lyrics";
 import useGame from "../../libs/useGame";
 import useQuiz from "../../libs/useQuiz";
 
-function QuizMonitor() {
+export default function QuizMonitor() {
   const { getCategory } = useGame();
   const { quiz, lyricsIndex, answer, status } = useQuiz();
 
@@ -47,5 +47,3 @@ function QuizMonitor() {
     </div>
   );
 }
-
-export default QuizMonitor;
