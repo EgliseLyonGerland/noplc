@@ -1,3 +1,5 @@
+import clsx from "clsx";
+
 import { Category, Point, Quiz } from "../types";
 
 export const categories: Category[] = [
@@ -444,3 +446,11 @@ export const pointByCategory = categories.reduce<Record<number, Point>>(
   },
   {}
 );
+
+export const colorsByCategories: Record<Point, [string, string]> = {
+  10: [clsx("bg-sky-600/80"), clsx("bg-sky-400/50")],
+  20: [clsx("bg-teal-600/80"), clsx("bg-teal-400/50")],
+  30: [clsx("bg-lime-600/80"), clsx("bg-lime-400/50")],
+  40: [clsx("bg-orange-600/80"), clsx("bg-orange-400/50")],
+  50: [clsx("bg-rose-600/80"), clsx("bg-rose-400/50")],
+};

@@ -1,19 +1,10 @@
 import clsx from "clsx";
 import { Fragment } from "react";
 
-import { categoriesByPoint, quizzes } from "./libs/config";
+import { categoriesByPoint, colorsByCategories, quizzes } from "./libs/config";
 import useGame from "./libs/useGame";
 import Logo from "./Logo";
 import Results from "./Results";
-import { Point } from "./types";
-
-const colors: Record<Point, [string, string]> = {
-  10: [clsx("bg-sky-600/80"), clsx("bg-sky-400/50")],
-  20: [clsx("bg-teal-600/80"), clsx("bg-teal-400/50")],
-  30: [clsx("bg-lime-600/80"), clsx("bg-lime-400/50")],
-  40: [clsx("bg-orange-600/80"), clsx("bg-orange-400/50")],
-  50: [clsx("bg-rose-600/80"), clsx("bg-rose-400/50")],
-};
 
 function Grid() {
   const { game, isCategoryPlayed, getCurrentTeam } = useGame();
@@ -54,7 +45,7 @@ function Grid() {
                           game.currentCategory === id && "outline outline-4",
                           isCategoryPlayed(id)
                             ? "bg-neutral opacity-30"
-                            : colors[point][0]
+                            : colorsByCategories[point][0]
                         )}
                       >
                         <span
@@ -62,7 +53,7 @@ function Grid() {
                             "rounded-full px-2 text-[1.8vh] normal-case opacity-70",
                             isCategoryPlayed(id)
                               ? "bg-base-200"
-                              : colors[point][1]
+                              : colorsByCategories[point][1]
                           )}
                         >
                           {point} pts
