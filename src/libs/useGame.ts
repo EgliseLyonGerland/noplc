@@ -9,6 +9,7 @@ const defaultGame: Game = {
   started: false,
   ended: false,
   currentCategory: null,
+  quizzesShown: false,
   resultsShown: false,
 };
 
@@ -86,6 +87,14 @@ export default function useGame() {
     return categories.find((category) => category.id === id);
   }
 
+  function getCurrentCategory() {
+    if (!data.currentCategory) {
+      return;
+    }
+
+    return getCategory(data.currentCategory);
+  }
+
   function isCategoryPlayed(id: number) {
     return Boolean(data.results.find((result) => result.categoryId === id));
   }
@@ -102,10 +111,12 @@ export default function useGame() {
     addTeam,
     renameTeam,
     removeTeam,
-    getCurrentTeam,
 
     addResult,
-    getCategory,
     isCategoryPlayed,
+
+    getCategory,
+    getCurrentTeam,
+    getCurrentCategory,
   };
 }

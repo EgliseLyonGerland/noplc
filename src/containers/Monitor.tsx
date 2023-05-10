@@ -2,6 +2,7 @@ import { FC } from "react";
 
 import GridMonitor from "./monitors/GridMonitor";
 import QuizMonitor from "./monitors/QuizMonitor";
+import QuizzesMonitor from "./monitors/QuizzesMonitor";
 import TeamsMonitor from "./monitors/TeamsMonitor";
 import useGame from "../libs/useGame";
 import useQuiz from "../libs/useQuiz";
@@ -14,6 +15,8 @@ export default function Monitor() {
   if (game.started) {
     if (quiz) {
       Content = QuizMonitor;
+    } else if (game.quizzesShown) {
+      Content = QuizzesMonitor;
     } else {
       Content = GridMonitor;
     }

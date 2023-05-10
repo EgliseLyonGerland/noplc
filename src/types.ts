@@ -24,6 +24,7 @@ export interface Game {
   started: boolean;
   ended: boolean;
   currentCategory: number | null;
+  quizzesShown: boolean;
   resultsShown: boolean;
   results: {
     teamId: number;

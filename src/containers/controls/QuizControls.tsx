@@ -2,12 +2,17 @@ import useGame from "../../libs/useGame";
 import useQuiz from "../../libs/useQuiz";
 
 export default function QuizControls() {
-  const { addResult } = useGame();
+  const { addResult, set } = useGame();
   const { quiz, update, lyricsIndex, answer, status, stopQuiz } = useQuiz();
 
   if (!quiz) {
     return null;
   }
+
+  const quit = () => {
+    set({ currentCategory: null, quizzesShown: false });
+    stopQuiz();
+  };
 
   const changeLyrics = (step: 1 | -1) => {
     update({
@@ -94,12 +99,12 @@ export default function QuizControls() {
           disabled={status === "idle" || status === "locked"}
           onClick={() => {
             addResult(quiz.categoryId, status === "success");
-            stopQuiz();
+            quit();
           }}
         >
           Enregistrer et quitter
         </button>
-        <button className="btn btn-error" onClick={() => stopQuiz()}>
+        <button className="btn btn-error" onClick={quit}>
           Quitter
         </button>
       </div>

@@ -1,16 +1,20 @@
+import clsx from "clsx";
+
+import Header from "../../components/Header";
 import Lyrics from "../../components/Lyrics";
+import { colorsByPoints } from "../../libs/config";
 import useGame from "../../libs/useGame";
 import useQuiz from "../../libs/useQuiz";
 
 export default function QuizMonitor() {
-  const { getCategory } = useGame();
+  const { getCurrentCategory } = useGame();
   const { quiz, lyricsIndex, answer, status } = useQuiz();
 
-  if (!quiz) {
+  const category = getCurrentCategory();
+
+  if (!quiz || !category) {
     return null;
   }
-
-  const category = getCategory(quiz.categoryId);
 
   let lyricsItem = "";
   if (lyricsIndex > -1) {
@@ -20,18 +24,31 @@ export default function QuizMonitor() {
   const isLast = lyricsIndex === quiz.lyrics.length - 1;
 
   return (
-    <div className="flex h-full w-full max-w-4xl flex-col justify-center gap-4">
-      <div className="flex-center bg-base-200 relative w-full flex-col gap-8 rounded-2xl p-6 pb-10">
-        <div className="flex gap-2">
-          <div className="badge badge-secondary badge-outline badge-lg">
-            {category?.name}
+    <div className="flex h-full w-full flex-col justify-center gap-4">
+      <Header bgColor={colorsByPoints[category.point][0]}>
+        <div className="flex-center flex-col gap-2">
+          <div className="flex gap-2">
+            <div
+              className={clsx(
+                "badge badge-lg border-0",
+                colorsByPoints[category.point][1]
+              )}
+            >
+              {category.name}
+            </div>
+            <div
+              className={clsx(
+                "badge badge-lg border-0",
+                colorsByPoints[category.point][1]
+              )}
+            >
+              {category.point} pts
+            </div>
           </div>
-          <div className="badge badge-outline badge-lg">
-            {category?.point} pts
-          </div>
+
+          <h3 className="text-4xl uppercase">{quiz.title}</h3>
         </div>
-        <h3 className="text-4xl">{quiz.title}</h3>
-      </div>
+      </Header>
       <div className="flex-center flex-1 flex-col gap-12">
         {lyricsItem && (
           <Lyrics
