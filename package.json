@@ -21,6 +21,7 @@
     "clsx": "^1.2.1",
     "daisyui": "^2.51.6",
     "emoji-picker-react": "^4.4.9",
+    "framer-motion": "^10.12.11",
     "lodash-es": "^4.17.21",
     "papaparse": "^5.4.1",
     "react": "^18.2.0",
