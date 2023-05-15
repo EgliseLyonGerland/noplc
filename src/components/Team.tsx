@@ -8,7 +8,7 @@ export default function Team({ team }: Props) {
   return (
     <div className="flex-center flex-col gap-4">
       <span className="text-[6rem] leading-none">{team.emoji}</span>
-      <div className="border-primary whitespace-nowrap rounded-full border p-2 px-6 text-center text-2xl uppercase">
+      <div className="whitespace-nowrap rounded-full border border-primary p-2 px-6 text-center text-2xl uppercase">
         {team.name}
       </div>
     </div>

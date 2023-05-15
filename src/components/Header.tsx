@@ -21,7 +21,7 @@ export default function Header({
       className={clsx("flex w-full gap-4", vertical && "flex-col", className)}
     >
       <div className="flex-center rounded-xl border p-4 px-6 shadow-2xl">
-        <Logo className="fill-neutral-content h-[10vh]" />
+        <Logo className="h-[10vh] fill-neutral-content" />
       </div>
       <div
         className={clsx(
