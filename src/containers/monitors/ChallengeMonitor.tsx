@@ -4,9 +4,11 @@ import Header from "../../components/Header";
 import Lyrics from "../../components/Lyrics";
 import { colorsByPoints } from "../../libs/config";
 import useAppState from "../../libs/useAppState";
+import useData from "../../libs/useData";
 import { getCategory, getChallenge } from "../../libs/utils";
 
 export default function ChallengeMonitor() {
+  const { categories, challenges } = useData();
   const state = useAppState();
   const { view } = state;
 
@@ -16,8 +18,8 @@ export default function ChallengeMonitor() {
 
   const { challengeId, lyricsIndex, answer, status } = view;
 
-  const challenge = getChallenge(challengeId);
-  const category = getCategory(challenge.categoryId);
+  const challenge = getChallenge(challenges, challengeId);
+  const category = getCategory(categories, challenge.categoryId);
 
   let lyricsItem = "";
   if (lyricsIndex > -1) {

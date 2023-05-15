@@ -1,11 +1,12 @@
 import { useMemo } from "react";
 
 import Header from "../../components/Header";
-import { pointByCategory } from "../../libs/config";
 import useAppState from "../../libs/useAppState";
+import useData from "../../libs/useData";
 import { getCategory, getChallenge, isGameDone } from "../../libs/utils";
 
 export default function ResultsMonitor() {
+  const { challenges, categories, pointByCategory } = useData();
   const state = useAppState();
   const { teams, rounds } = state;
 
@@ -14,15 +15,15 @@ export default function ResultsMonitor() {
       acc[curr.teamId] = acc[curr.teamId] || 0;
 
       if (curr.status === "success") {
-        const challenge = getChallenge(curr.challengeId);
-        const category = getCategory(challenge.categoryId);
+        const challenge = getChallenge(challenges, curr.challengeId);
+        const category = getCategory(categories, challenge.categoryId);
 
         acc[curr.teamId] += pointByCategory[category.id];
       }
 
       return acc;
     }, {});
-  }, [rounds]);
+  }, [categories, challenges, pointByCategory, rounds]);
 
   const max = useMemo(() => {
     return Object.values(pointByTeam).reduce(
@@ -66,7 +67,7 @@ export default function ResultsMonitor() {
         <div className="flex w-full py-4">
           {teams.map((team) => (
             <div className="flex-center flex-1" key={team.id}>
-              <div className="badge badge-lg badge-outline p-4 text-xl">
+              <div className="badge-outline badge badge-lg p-4 text-xl">
                 <span className="mr-2 text-2xl">{team.emoji}</span>
                 {team.name}
               </div>
@@ -75,8 +76,8 @@ export default function ResultsMonitor() {
         </div>
       </div>
 
-      {winners.length > 0 && isGameDone(state) && (
-        <div className="border-neutral-content rounded-lg border p-4 px-6 text-3xl">
+      {winners.length > 0 && isGameDone(categories, state) && (
+        <div className="rounded-lg border border-neutral-content p-4 px-6 text-3xl">
           {winners.length > 1 ? (
             <div>Les équipes {winners.join(", ")} gagnent ! 🎉</div>
           ) : (

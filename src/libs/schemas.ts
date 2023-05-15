@@ -16,14 +16,14 @@ export const teamSchema = z.object({
 });
 
 export const categorySchema = z.object({
-  id: z.number(),
+  id: z.string(),
   name: z.string(),
   point: pointSchema,
 });
 
 export const challengeSchema = z.object({
   id: z.number(),
-  categoryId: z.number(),
+  categoryId: z.string(),
   title: z.string(),
   lyrics: z.array(z.string()),
 });
@@ -40,7 +40,7 @@ export const teamsViewSchema = z.object({
 
 export const categoriesViewSchema = z.object({
   id: z.literal("categories").default("categories"),
-  selectedCategoryId: z.number().nullable().default(null),
+  selectedCategoryId: z.string().nullable().default(null),
   selectedChallengeId: z.number().nullable().default(null),
   challengesShown: z.boolean().default(false),
   resultsShown: z.boolean().default(false),

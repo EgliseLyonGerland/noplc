@@ -3,11 +3,13 @@ import { Fragment } from "react";
 
 import ResultsMonitor from "./ResultsMonitor";
 import Header from "../../components/Header";
-import { categoriesByPoint, colorsByPoints } from "../../libs/config";
+import { colorsByPoints } from "../../libs/config";
 import useAppState from "../../libs/useAppState";
+import useData from "../../libs/useData";
 import { getCurrentTeam, isCategoryDone, isGameDone } from "../../libs/utils";
 
 export default function CategoriesMonitor() {
+  const { categories, challenges, categoriesByPoint } = useData();
   const state = useAppState();
   const { view } = state;
 
@@ -15,7 +17,7 @@ export default function CategoriesMonitor() {
     return null;
   }
 
-  const gameDone = isGameDone(state);
+  const gameDone = isGameDone(categories, state);
   const currentTeam = getCurrentTeam(state);
 
   return (
@@ -43,13 +45,13 @@ export default function CategoriesMonitor() {
                   {categories.map(({ id, name, point }) => (
                     <div
                       className={clsx(
-                        "flex-center bg-base-200 h-full w-full flex-col gap-2 rounded-lg p-2 text-white transition-[opacity,transform] ease-in-out",
+                        "flex-center h-full w-full flex-col gap-2 rounded-lg bg-base-200 p-2 text-white transition-[opacity,transform] ease-in-out",
                         view.selectedCategoryId === id &&
                           "scale-105 outline outline-2",
                         view.selectedCategoryId &&
                           view.selectedCategoryId !== id &&
                           "opacity-20",
-                        isCategoryDone(state, id)
+                        isCategoryDone(challenges, state, id)
                           ? "bg-neutral opacity-30"
                           : colorsByPoints[point][0]
                       )}
@@ -58,7 +60,7 @@ export default function CategoriesMonitor() {
                       <span
                         className={clsx(
                           "rounded-full px-2 text-[1.8vh] normal-case opacity-70",
-                          isCategoryDone(state, id)
+                          isCategoryDone(challenges, state, id)
                             ? "bg-base-200"
                             : colorsByPoints[point][1]
                         )}
@@ -78,7 +80,7 @@ export default function CategoriesMonitor() {
       </div>
 
       {view.resultsShown && (
-        <div className="bg-base-100 fixed left-0 top-0 h-screen w-screen">
+        <div className="fixed left-0 top-0 h-screen w-screen bg-base-100">
           <ResultsMonitor />
         </div>
       )}

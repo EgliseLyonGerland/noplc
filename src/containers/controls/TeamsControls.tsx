@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import useAppState from "../../libs/useAppState";
+import useData from "../../libs/useData";
 
 const teamSchema = z.object({
   name: z.string().min(1),
@@ -15,6 +16,7 @@ const teamSchema = z.object({
 
 export default function TeamsControls() {
   const [emojiPickerOpened, setEmojiPickerOpened] = useState(false);
+  const { sync } = useData();
   const { teams, dispatch } = useAppState();
 
   const {
@@ -30,7 +32,7 @@ export default function TeamsControls() {
 
   return (
     <div className="flex flex-col gap-4">
-      <h2 className="bg-neutral text-neutral-content rounded-lg p-2 px-4 text-xl">
+      <h2 className="rounded-lg bg-neutral p-2 px-4 text-xl text-neutral-content">
         Équipes
       </h2>
 
@@ -54,7 +56,7 @@ export default function TeamsControls() {
                 <td>{team.name}</td>
                 <td>
                   <button
-                    className="btn btn-circle btn-ghost btn-sm"
+                    className="btn-ghost btn-sm btn-circle btn"
                     onClick={() =>
                       dispatch({ type: "team.delete", id: team.id })
                     }
@@ -84,7 +86,7 @@ export default function TeamsControls() {
       >
         <input
           {...register("name")}
-          className="input input-bordered input-primary w-full max-w-xs"
+          className="input-bordered input-primary input w-full max-w-xs"
           placeholder="Nom de l'équipe"
         />
         <input {...register("emoji")} type="hidden" />
@@ -94,7 +96,7 @@ export default function TeamsControls() {
           open={emojiPickerOpened}
         >
           <DropdownMenu.Trigger asChild>
-            <button className="btn btn-circle text-2xl">
+            <button className="btn-circle btn text-2xl">
               {getValues("emoji") || "﹖"}
             </button>
           </DropdownMenu.Trigger>
@@ -121,12 +123,15 @@ export default function TeamsControls() {
         </button>
       </form>
       <div className="divider"></div>
-      <div>
+      <div className="flex gap-4">
         <button
-          className="btn btn-primary"
+          className="btn-primary btn"
           onClick={() => dispatch({ type: "game.start" })}
         >
           Démarrer le jeu
+        </button>
+        <button className="btn ml-auto" onClick={sync}>
+          Synchroniser
         </button>
       </div>
     </div>

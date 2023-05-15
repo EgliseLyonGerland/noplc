@@ -4,13 +4,12 @@ import {
   XCircleIcon,
 } from "@heroicons/react/24/outline";
 import clsx from "clsx";
+import { deburr } from "lodash";
 
 import { ChallengeStatus } from "../libs/types";
 
 function getHiddenText(text: string) {
-  return text
-    ?.normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
+  return deburr(text)
     .replace(/[^\w ]/g, "")
     .replace(/\w+/g, "＿＿");
 }
@@ -38,7 +37,7 @@ export default function Lyrics({
           ? "border-red-500 text-red-500"
           : status === "locked"
           ? "border-yellow-300 text-yellow-300"
-          : "text-neutral-content border-neutral-content",
+          : "border-neutral-content text-neutral-content",
         className
       )}
     >

@@ -1,8 +1,10 @@
 import useAppState from "../../libs/useAppState";
+import useData from "../../libs/useData";
 import { getCurrentTeam } from "../../libs/utils";
 import { getChallenge } from "../../libs/utils";
 
 export default function ChallengeControls() {
+  const { challenges } = useData();
   const state = useAppState();
   const { view, dispatch } = state;
 
@@ -12,7 +14,7 @@ export default function ChallengeControls() {
 
   const { challengeId, lyricsIndex, answer, status } = view;
 
-  const challenge = getChallenge(challengeId);
+  const challenge = getChallenge(challenges, challengeId);
   const team = getCurrentTeam(state);
 
   const quit = () => {
@@ -62,7 +64,7 @@ export default function ChallengeControls() {
         }}
       >
         <input
-          className="input input-bordered input-primary w-full max-w-xs"
+          className="input-bordered input-primary input w-full max-w-xs"
           defaultValue={answer}
           disabled={!isLast}
           name="name"
@@ -131,7 +133,7 @@ export default function ChallengeControls() {
         >
           Enregistrer et quitter
         </button>
-        <button className="btn btn-error" onClick={quit}>
+        <button className="btn-error btn" onClick={quit}>
           Quitter
         </button>
       </div>

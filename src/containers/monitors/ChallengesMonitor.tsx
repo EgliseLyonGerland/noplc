@@ -1,11 +1,13 @@
 import clsx from "clsx";
 
 import Header from "../../components/Header";
-import { colorsByPoints, challenges } from "../../libs/config";
+import { colorsByPoints } from "../../libs/config";
 import useAppState from "../../libs/useAppState";
+import useData from "../../libs/useData";
 import { getCategory } from "../../libs/utils";
 
 export default function ChallengesMonitor() {
+  const { categories, challenges } = useData();
   const state = useAppState();
   const { view } = state;
 
@@ -13,7 +15,7 @@ export default function ChallengesMonitor() {
     return null;
   }
 
-  const category = getCategory(view.selectedCategoryId);
+  const category = getCategory(categories, view.selectedCategoryId);
 
   return (
     <div className="flex w-full flex-1 flex-col gap-4">
@@ -38,7 +40,7 @@ export default function ChallengesMonitor() {
             .map((challenge) => (
               <div
                 className={clsx(
-                  "bg-base-300 text-base-content min-w-[60vw] rounded-xl border p-6 px-12 text-center text-4xl font-bold uppercase transition",
+                  "min-w-[60vw] rounded-xl border bg-base-300 p-6 px-12 text-center text-4xl font-bold uppercase text-base-content transition",
                   view.selectedChallengeId !== null &&
                     (view.selectedChallengeId === challenge.id
                       ? "scale-105"

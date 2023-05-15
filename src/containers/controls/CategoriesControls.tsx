@@ -1,14 +1,12 @@
 import clsx from "clsx";
 
-import {
-  categoriesByPoint,
-  colorsByPoints,
-  challenges,
-} from "../../libs/config";
+import { colorsByPoints } from "../../libs/config";
 import useAppState from "../../libs/useAppState";
+import useData from "../../libs/useData";
 import { isCategoryDone } from "../../libs/utils";
 
 export default function CategoriesControls() {
+  const { challenges, categoriesByPoint } = useData();
   const state = useAppState();
   const { view, dispatch } = state;
 
@@ -19,14 +17,14 @@ export default function CategoriesControls() {
   return (
     <div>
       <div className="flex flex-1 gap-4">
-        <div className="@container flex w-[60%] flex-col gap-2">
-          <h2 className="bg-neutral text-neutral-content mb-2 rounded-lg p-2 px-4 text-xl">
+        <div className="flex w-[60%] flex-col gap-2 @container">
+          <h2 className="mb-2 rounded-lg bg-neutral p-2 px-4 text-xl text-neutral-content">
             Catégories
           </h2>
           <div className="flex flex-1 flex-col gap-2">
             {Object.entries(categoriesByPoint).map(([point, categories]) => (
               <div
-                className="@xl:grid-cols-3 grid grid-cols-2 gap-2"
+                className="grid grid-cols-2 gap-2 @xl:grid-cols-3"
                 key={point}
               >
                 {categories.map((category) => (
@@ -38,7 +36,8 @@ export default function CategoriesControls() {
                       colorsByPoints[category.point][0]
                     )}
                     disabled={
-                      isCategoryDone(state, category.id) || view.challengesShown
+                      isCategoryDone(challenges, state, category.id) ||
+                      view.challengesShown
                     }
                     key={category.id}
                     onClick={() =>
@@ -64,7 +63,7 @@ export default function CategoriesControls() {
           <div className="sticky top-4">
             <div className="flex gap-4">
               <div className="flex flex-1 flex-col gap-4">
-                <h2 className="bg-neutral text-neutral-content rounded-lg p-2 px-4 text-xl">
+                <h2 className="rounded-lg bg-neutral p-2 px-4 text-xl text-neutral-content">
                   Cantiques
                 </h2>
 
@@ -108,7 +107,7 @@ export default function CategoriesControls() {
 
                 <div className="flex flex-1 flex-col gap-2">
                   <button
-                    className="btn btn-primary"
+                    className="btn-primary btn"
                     disabled={!view.selectedCategoryId}
                     onClick={() =>
                       dispatch({
@@ -122,7 +121,7 @@ export default function CategoriesControls() {
                       : "Afficher les cantiques"}
                   </button>
                   <button
-                    className="btn btn-primary"
+                    className="btn-primary btn"
                     disabled={!view.selectedChallengeId}
                     onClick={() => {
                       if (view.selectedChallengeId) {
@@ -144,7 +143,7 @@ export default function CategoriesControls() {
       <div className="divider"></div>
 
       <button
-        className="btn btn-primary"
+        className="btn-primary btn"
         onClick={() =>
           dispatch({
             type: "categoriesView.showResults",
