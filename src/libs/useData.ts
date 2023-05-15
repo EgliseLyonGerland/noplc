@@ -1,4 +1,4 @@
-import { camelCase, kebabCase } from "lodash";
+import { camelCase, kebabCase } from "lodash-es";
 import { parse } from "papaparse";
 import useFetch from "use-http";
 import useLocalStorageState from "use-local-storage-state";

@@ -4,7 +4,7 @@ import {
   XCircleIcon,
 } from "@heroicons/react/24/outline";
 import clsx from "clsx";
-import { deburr } from "lodash";
+import { deburr } from "lodash-es";
 
 import { ChallengeStatus } from "../libs/types";
 

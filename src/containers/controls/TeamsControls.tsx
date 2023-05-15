@@ -1,13 +1,14 @@
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import EmojiPicker, { EmojiStyle, Theme } from "emoji-picker-react";
-import { useState } from "react";
+import { Suspense, lazy, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import useAppState from "../../libs/useAppState";
 import useData from "../../libs/useData";
+
+const EmojiPicker = lazy(() => import("../../components/EmojiPicker"));
 
 const teamSchema = z.object({
   name: z.string().min(1),
@@ -106,14 +107,14 @@ export default function TeamsControls() {
               className="data-[side=bottom] data-[align=end]"
               sideOffset={16}
             >
-              <EmojiPicker
-                emojiStyle={EmojiStyle.NATIVE}
-                onEmojiClick={(data) => {
-                  setValue("emoji", data.emoji, { shouldValidate: true });
-                  setEmojiPickerOpened(false);
-                }}
-                theme={Theme.DARK}
-              />
+              <Suspense>
+                <EmojiPicker
+                  onEmojiClick={(data) => {
+                    setValue("emoji", data.emoji, { shouldValidate: true });
+                    setEmojiPickerOpened(false);
+                  }}
+                />
+              </Suspense>
             </DropdownMenu.Content>
           </DropdownMenu.Portal>
         </DropdownMenu.Root>

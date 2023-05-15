@@ -1,10 +1,12 @@
-import Controls from "./containers/Controls";
-import Monitor from "./containers/Monitor";
+import { Suspense, lazy } from "react";
+
+const Controls = lazy(() => import("./containers/Controls"));
+const Monitor = lazy(() => import("./containers/Monitor"));
 
 export default function App() {
-  if (window.location.hash === "#controls") {
-    return <Controls />;
-  }
-
-  return <Monitor />;
+  return (
+    <Suspense>
+      {window.location.hash === "#controls" ? <Controls /> : <Monitor />}
+    </Suspense>
+  );
 }
