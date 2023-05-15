@@ -6,7 +6,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import useGame from "../../libs/useGame";
+import useAppState from "../../libs/useAppState";
 
 const teamSchema = z.object({
   name: z.string().min(1),
@@ -14,8 +14,8 @@ const teamSchema = z.object({
 });
 
 export default function TeamsControls() {
-  const { game, startGame, addTeam, removeTeam } = useGame();
   const [emojiPickerOpened, setEmojiPickerOpened] = useState(false);
+  const { teams, dispatch } = useAppState();
 
   const {
     register,
@@ -45,7 +45,7 @@ export default function TeamsControls() {
             </tr>
           </thead>
           <tbody>
-            {game.teams.map((team) => (
+            {teams.map((team) => (
               <tr key={team.id}>
                 <th>{team.id}</th>
                 <td align="center" className="text-2xl">
@@ -55,7 +55,9 @@ export default function TeamsControls() {
                 <td>
                   <button
                     className="btn btn-circle btn-ghost btn-sm"
-                    onClick={() => removeTeam(team.id)}
+                    onClick={() =>
+                      dispatch({ type: "team.delete", id: team.id })
+                    }
                   >
                     <XMarkIcon className="h-6" />
                   </button>
@@ -69,10 +71,14 @@ export default function TeamsControls() {
       <form
         className="flex gap-4"
         onSubmit={handleSubmit((data) => {
-          if (game.teams.find((team) => team.emoji === data.emoji)) {
+          if (teams.find((team) => team.emoji === data.emoji)) {
             return;
           }
-          addTeam(data.name, data.emoji);
+          dispatch({
+            type: "team.add",
+            name: data.name,
+            emoji: data.emoji,
+          });
           reset();
         })}
       >
@@ -116,7 +122,10 @@ export default function TeamsControls() {
       </form>
       <div className="divider"></div>
       <div>
-        <button className="btn btn-primary" onClick={startGame}>
+        <button
+          className="btn btn-primary"
+          onClick={() => dispatch({ type: "game.start" })}
+        >
           Démarrer le jeu
         </button>
       </div>

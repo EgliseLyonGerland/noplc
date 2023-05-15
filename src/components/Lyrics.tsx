@@ -5,7 +5,7 @@ import {
 } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 
-import { LyricsState } from "../types";
+import { ChallengeStatus } from "../libs/types";
 
 function getHiddenText(text: string) {
   return text
@@ -17,7 +17,7 @@ function getHiddenText(text: string) {
 
 interface Props {
   text: string;
-  status?: LyricsState;
+  status?: ChallengeStatus;
   hidden?: boolean;
   className?: string;
 }

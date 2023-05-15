@@ -3,25 +3,28 @@ import clsx from "clsx";
 import Header from "../../components/Header";
 import Lyrics from "../../components/Lyrics";
 import { colorsByPoints } from "../../libs/config";
-import useGame from "../../libs/useGame";
-import useQuiz from "../../libs/useQuiz";
+import useAppState from "../../libs/useAppState";
+import { getCategory, getChallenge } from "../../libs/utils";
 
-export default function QuizMonitor() {
-  const { getCurrentCategory } = useGame();
-  const { quiz, lyricsIndex, answer, status } = useQuiz();
+export default function ChallengeMonitor() {
+  const state = useAppState();
+  const { view } = state;
 
-  const category = getCurrentCategory();
-
-  if (!quiz || !category) {
+  if (view.id !== "challenge") {
     return null;
   }
 
+  const { challengeId, lyricsIndex, answer, status } = view;
+
+  const challenge = getChallenge(challengeId);
+  const category = getCategory(challenge.categoryId);
+
   let lyricsItem = "";
   if (lyricsIndex > -1) {
-    lyricsItem = quiz.lyrics[lyricsIndex];
+    lyricsItem = challenge.lyrics[lyricsIndex];
   }
 
-  const isLast = lyricsIndex === quiz.lyrics.length - 1;
+  const isLast = lyricsIndex === challenge.lyrics.length - 1;
 
   return (
     <div className="flex h-full w-full flex-col justify-center gap-4">
@@ -46,7 +49,7 @@ export default function QuizMonitor() {
             </div>
           </div>
 
-          <h3 className="text-4xl uppercase">{quiz.title}</h3>
+          <h3 className="text-4xl uppercase">{challenge.title}</h3>
         </div>
       </Header>
       <div className="flex-center flex-1 flex-col gap-12">

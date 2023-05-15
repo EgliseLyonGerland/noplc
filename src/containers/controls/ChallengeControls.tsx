@@ -1,29 +1,35 @@
-import useGame from "../../libs/useGame";
-import useQuiz from "../../libs/useQuiz";
+import useAppState from "../../libs/useAppState";
+import { getCurrentTeam } from "../../libs/utils";
+import { getChallenge } from "../../libs/utils";
 
-export default function QuizControls() {
-  const { addResult, set } = useGame();
-  const { quiz, update, lyricsIndex, answer, status, stopQuiz } = useQuiz();
+export default function ChallengeControls() {
+  const state = useAppState();
+  const { view, dispatch } = state;
 
-  if (!quiz) {
+  if (view.id !== "challenge") {
     return null;
   }
 
+  const { challengeId, lyricsIndex, answer, status } = view;
+
+  const challenge = getChallenge(challengeId);
+  const team = getCurrentTeam(state);
+
   const quit = () => {
-    set({ currentCategory: null, quizzesShown: false });
-    stopQuiz();
+    dispatch({ type: "challenge.stop" });
   };
 
   const changeLyrics = (step: 1 | -1) => {
-    update({
-      lyricsIndex: Math.max(
+    dispatch({
+      type: "challengeView.setLyricsIndex",
+      index: Math.max(
         -1,
-        Math.min(lyricsIndex + step, quiz?.lyrics.length - 1)
+        Math.min(lyricsIndex + step, challenge.lyrics.length - 1)
       ),
     });
   };
 
-  const isLast = lyricsIndex === quiz.lyrics.length - 1;
+  const isLast = lyricsIndex === challenge.lyrics.length - 1;
 
   return (
     <div>
@@ -49,7 +55,10 @@ export default function QuizControls() {
           event.preventDefault();
 
           const formData = new FormData(event.currentTarget);
-          update({ answer: formData.get("name") as string });
+          dispatch({
+            type: "challengeView.setAnswer",
+            answer: formData.get("name") as string,
+          });
         }}
       >
         <input
@@ -67,7 +76,10 @@ export default function QuizControls() {
           className="btn"
           disabled={!isLast || !answer}
           onClick={() =>
-            update({ status: status === "idle" ? "locked" : "idle" })
+            dispatch({
+              type: "challengeView.setStatus",
+              status: status === "idle" ? "locked" : "idle",
+            })
           }
         >
           {status !== "idle"
@@ -80,14 +92,24 @@ export default function QuizControls() {
         <button
           className="btn"
           disabled={status === "idle" || status === "success"}
-          onClick={() => update({ status: "success" })}
+          onClick={() =>
+            dispatch({
+              type: "challengeView.setStatus",
+              status: "success",
+            })
+          }
         >
           Bonne réponse
         </button>
         <button
           className="btn"
           disabled={status === "idle" || status === "fail"}
-          onClick={() => update({ status: "fail" })}
+          onClick={() =>
+            dispatch({
+              type: "challengeView.setStatus",
+              status: "fail",
+            })
+          }
         >
           Mauvaise réponse
         </button>
@@ -98,8 +120,13 @@ export default function QuizControls() {
           className="btn"
           disabled={status === "idle" || status === "locked"}
           onClick={() => {
-            addResult(quiz.categoryId, status === "success");
-            quit();
+            dispatch({
+              type: "challenge.save",
+              challengeId,
+              teamId: team.id,
+              status: status === "success" ? "success" : "fail",
+            });
+            dispatch({ type: "challenge.stop" });
           }}
         >
           Enregistrer et quitter

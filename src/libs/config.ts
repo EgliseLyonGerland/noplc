@@ -1,6 +1,6 @@
 import clsx from "clsx";
 
-import { Category, Point, Quiz } from "../types";
+import { Category, Challenge, Point } from "./types";
 
 export const categories: Category[] = [
   { id: 1, point: 10, name: "Psaumes" },
@@ -35,7 +35,7 @@ export const categories: Category[] = [
   { id: 30, point: 50, name: "Pour se repentir" },
 ];
 
-export const quizzes: Quiz[] = [
+export const challenges: Challenge[] = [
   {
     id: 1,
     categoryId: 1,

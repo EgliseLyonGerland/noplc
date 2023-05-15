@@ -3,13 +3,20 @@ import { Fragment } from "react";
 
 import ResultsMonitor from "./ResultsMonitor";
 import Header from "../../components/Header";
-import { categoriesByPoint, colorsByPoints, quizzes } from "../../libs/config";
-import useGame from "../../libs/useGame";
+import { categoriesByPoint, colorsByPoints } from "../../libs/config";
+import useAppState from "../../libs/useAppState";
+import { getCurrentTeam, isCategoryDone, isGameDone } from "../../libs/utils";
 
-export default function GridMonitor() {
-  const { game, isCategoryPlayed, getCurrentTeam } = useGame();
+export default function CategoriesMonitor() {
+  const state = useAppState();
+  const { view } = state;
 
-  const currentTeam = getCurrentTeam();
+  if (view.id !== "categories") {
+    return null;
+  }
+
+  const gameDone = isGameDone(state);
+  const currentTeam = getCurrentTeam(state);
 
   return (
     <>
@@ -20,7 +27,7 @@ export default function GridMonitor() {
               <Fragment key={point}>
                 {index === 0 && (
                   <Header vertical>
-                    {!game.ended && (
+                    {!gameDone && (
                       <div className="flex-center flex-1 flex-col gap-2">
                         <span className="text-[10vh] leading-none">
                           {currentTeam.emoji}
@@ -37,12 +44,12 @@ export default function GridMonitor() {
                     <div
                       className={clsx(
                         "flex-center bg-base-200 h-full w-full flex-col gap-2 rounded-lg p-2 text-white transition-[opacity,transform] ease-in-out",
-                        game.currentCategory === id &&
+                        view.selectedCategoryId === id &&
                           "scale-105 outline outline-2",
-                        game.currentCategory &&
-                          game.currentCategory !== id &&
+                        view.selectedCategoryId &&
+                          view.selectedCategoryId !== id &&
                           "opacity-20",
-                        isCategoryPlayed(id)
+                        isCategoryDone(state, id)
                           ? "bg-neutral opacity-30"
                           : colorsByPoints[point][0]
                       )}
@@ -51,7 +58,7 @@ export default function GridMonitor() {
                       <span
                         className={clsx(
                           "rounded-full px-2 text-[1.8vh] normal-case opacity-70",
-                          isCategoryPlayed(id)
+                          isCategoryDone(state, id)
                             ? "bg-base-200"
                             : colorsByPoints[point][1]
                         )}
@@ -70,35 +77,11 @@ export default function GridMonitor() {
         </div>
       </div>
 
-      {game.resultsShown && (
+      {view.resultsShown && (
         <div className="bg-base-100 fixed left-0 top-0 h-screen w-screen">
           <ResultsMonitor />
         </div>
       )}
-
-      <label
-        className={clsx(
-          "modal cursor-pointer",
-          game.currentCategory && game.quizzesShown && "modal-open"
-        )}
-      >
-        <label className="modal-box relative" htmlFor="">
-          <h3 className="mb-8 text-2xl font-bold">Sélectionnez le cantique</h3>
-          <div className="flex flex-col gap-2">
-            {game.currentCategory &&
-              quizzes
-                .filter((quiz) => quiz.categoryId === game.currentCategory)
-                .map((quiz) => (
-                  <button
-                    className="btn btn-primary btn-xl text-xl"
-                    key={quiz.id}
-                  >
-                    {quiz.title}
-                  </button>
-                ))}
-          </div>
-        </label>
-      </label>
     </>
   );
 }

@@ -1,23 +1,28 @@
 import { useMemo } from "react";
 
-import Logo from "../../components/Logo";
+import Header from "../../components/Header";
 import { pointByCategory } from "../../libs/config";
-import useGame from "../../libs/useGame";
+import useAppState from "../../libs/useAppState";
+import { getCategory, getChallenge, isGameDone } from "../../libs/utils";
 
 export default function ResultsMonitor() {
-  const { game } = useGame();
+  const state = useAppState();
+  const { teams, rounds } = state;
 
   const pointByTeam = useMemo(() => {
-    return game.results.reduce<Record<number, number>>((acc, curr) => {
+    return rounds.reduce<Record<number, number>>((acc, curr) => {
       acc[curr.teamId] = acc[curr.teamId] || 0;
 
-      if (curr.success) {
-        acc[curr.teamId] += pointByCategory[curr.categoryId];
+      if (curr.status === "success") {
+        const challenge = getChallenge(curr.challengeId);
+        const category = getCategory(challenge.categoryId);
+
+        acc[curr.teamId] += pointByCategory[category.id];
       }
 
       return acc;
     }, {});
-  }, [game.results]);
+  }, [rounds]);
 
   const max = useMemo(() => {
     return Object.values(pointByTeam).reduce(
@@ -31,17 +36,17 @@ export default function ResultsMonitor() {
       .filter(([, point]) => point === max)
       .map(
         ([teamId]) =>
-          game.teams.find((team) => team.id === Number(teamId))?.name || "???"
+          teams.find((team) => team.id === Number(teamId))?.name || "???"
       );
-  }, [game.teams, max, pointByTeam]);
+  }, [teams, max, pointByTeam]);
 
   return (
     <div className="flex h-full flex-col items-center gap-12 p-12 pt-6">
-      <Logo className="fill-neutral-content h-[15vh]" />
+      <Header>Resultats</Header>
 
       <div className="flex h-full w-full flex-1 flex-col">
         <div className="flex flex-1 justify-end">
-          {game.teams.map((team) => (
+          {teams.map((team) => (
             <div
               className="flex flex-1 items-end justify-center border-b"
               key={team.id}
@@ -59,7 +64,7 @@ export default function ResultsMonitor() {
           ))}
         </div>
         <div className="flex w-full py-4">
-          {game.teams.map((team) => (
+          {teams.map((team) => (
             <div className="flex-center flex-1" key={team.id}>
               <div className="badge badge-lg badge-outline p-4 text-xl">
                 <span className="mr-2 text-2xl">{team.emoji}</span>
@@ -70,7 +75,7 @@ export default function ResultsMonitor() {
         </div>
       </div>
 
-      {winners.length > 0 && game.ended && (
+      {winners.length > 0 && isGameDone(state) && (
         <div className="border-neutral-content rounded-lg border p-4 px-6 text-3xl">
           {winners.length > 1 ? (
             <div>Les équipes {winners.join(", ")} gagnent ! 🎉</div>

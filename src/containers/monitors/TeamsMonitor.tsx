@@ -1,9 +1,9 @@
 import Header from "../../components/Header";
 import Team from "../../components/Team";
-import useGame from "../../libs/useGame";
+import useAppState from "../../libs/useAppState";
 
 export default function TeamsMonitor() {
-  const { game } = useGame();
+  const { teams } = useAppState();
 
   return (
     <div className="flex h-full w-full flex-col items-center gap-8">
@@ -11,7 +11,7 @@ export default function TeamsMonitor() {
 
       <div className="flex-center flex-1">
         <div className="grid grid-cols-2 gap-8 lg:grid-cols-4">
-          {game.teams.map((team) => (
+          {teams.map((team) => (
             <Team key={team.id} team={team} />
           ))}
         </div>

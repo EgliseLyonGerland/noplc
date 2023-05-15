@@ -1,25 +1,28 @@
 import { FC } from "react";
 
-import GridMonitor from "./monitors/GridMonitor";
-import QuizMonitor from "./monitors/QuizMonitor";
-import QuizzesMonitor from "./monitors/QuizzesMonitor";
+import CategoriesMonitor from "./monitors/CategoriesMonitor";
+import ChallengeMonitor from "./monitors/ChallengeMonitor";
+import ChallengesMonitor from "./monitors/ChallengesMonitor";
 import TeamsMonitor from "./monitors/TeamsMonitor";
-import useGame from "../libs/useGame";
-import useQuiz from "../libs/useQuiz";
+import useAppState from "../libs/useAppState";
+
+function NoContent() {
+  return <div>NO CONTENT...</div>;
+}
 
 export default function Monitor() {
-  const { game } = useGame();
-  const { quiz } = useQuiz();
+  const { view } = useAppState();
 
-  let Content: FC = TeamsMonitor;
-  if (game.started) {
-    if (quiz) {
-      Content = QuizMonitor;
-    } else if (game.quizzesShown) {
-      Content = QuizzesMonitor;
-    } else {
-      Content = GridMonitor;
-    }
+  let Content: FC = NoContent;
+  switch (view.id) {
+    case "teams":
+      Content = TeamsMonitor;
+      break;
+    case "categories":
+      Content = view.challengesShown ? ChallengesMonitor : CategoriesMonitor;
+      break;
+    case "challenge":
+      Content = ChallengeMonitor;
   }
 
   return (

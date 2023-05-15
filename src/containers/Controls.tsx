@@ -1,25 +1,13 @@
 import { Cog8ToothIcon } from "@heroicons/react/24/outline";
 
-import GridControls from "./controls/GridControls";
-import QuizControls from "./controls/QuizControls";
+import CategoriesControls from "./controls/CategoriesControls";
+import ChallengeControls from "./controls/ChallengeControls";
 import TeamsControls from "./controls/TeamsControls";
 import Logo from "../components/Logo";
-import useGame from "../libs/useGame";
-import useQuiz from "../libs/useQuiz";
+import useAppState from "../libs/useAppState";
 
 export default function Controls() {
-  const { game, stopGame } = useGame();
-  const { quiz } = useQuiz();
-
-  let panel = "teams";
-
-  if (game.started) {
-    if (quiz) {
-      panel = "quiz";
-    } else {
-      panel = "grid";
-    }
-  }
+  const { view, dispatch } = useAppState();
 
   return (
     <div className="flex flex-col">
@@ -42,19 +30,21 @@ export default function Controls() {
             tabIndex={0}
           >
             <li>
-              <button onClick={stopGame}>Arrêter le jeu</button>
+              <button onClick={() => dispatch({ type: "game.stop" })}>
+                Arrêter le jeu
+              </button>
             </li>
           </ul>
         </div>
       </div>
       <div className="p-4">
-        {panel === "teams" ? (
+        {view.id === "teams" ? (
           <TeamsControls />
-        ) : panel === "grid" ? (
-          <GridControls />
-        ) : panel === "quiz" ? (
-          <QuizControls />
-        ) : null}
+        ) : view.id === "categories" ? (
+          <CategoriesControls />
+        ) : (
+          <ChallengeControls />
+        )}
       </div>
     </div>
   );
