@@ -5,6 +5,7 @@ import {
 } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 import { deburr } from "lodash-es";
+import { forwardRef } from "react";
 
 import { ChallengeStatus } from "../libs/types";
 
@@ -21,16 +22,15 @@ interface Props {
   className?: string;
 }
 
-export default function Lyrics({
-  text,
-  status = "idle",
-  hidden = false,
-  className,
-}: Props) {
+const Lyrics = forwardRef<HTMLDivElement, Props>(function Lyrics(
+  { text, status = "idle", hidden = false, className },
+  ref
+) {
   return (
     <div
       className={clsx(
-        "flex-center relative gap-4",
+        "flex-center gap-4",
+        !className?.includes("absolute") && "relative",
         status === "success"
           ? "border-green-500 text-green-500"
           : status === "fail"
@@ -40,6 +40,7 @@ export default function Lyrics({
           : "border-neutral-content text-neutral-content",
         className
       )}
+      ref={ref}
     >
       <div
         className={clsx(
@@ -60,4 +61,6 @@ export default function Lyrics({
       </div>
     </div>
   );
-}
+});
+
+export default Lyrics;

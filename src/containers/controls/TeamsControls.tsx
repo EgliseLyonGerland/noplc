@@ -27,7 +27,7 @@ export default function TeamsControls() {
     setValue,
     reset,
     getValues,
-  } = useForm({
+  } = useForm<z.infer<typeof teamSchema>>({
     resolver: zodResolver(teamSchema),
   });
 

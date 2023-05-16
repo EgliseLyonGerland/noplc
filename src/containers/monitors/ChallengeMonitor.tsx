@@ -1,4 +1,5 @@
 import clsx from "clsx";
+import { motion } from "framer-motion";
 
 import Header from "../../components/Header";
 import Lyrics from "../../components/Lyrics";
@@ -6,6 +7,8 @@ import { colorsByPoints } from "../../libs/config";
 import useAppState from "../../libs/useAppState";
 import useData from "../../libs/useData";
 import { getCategory, getChallenge } from "../../libs/utils";
+
+const MotionLyrics = motion(Lyrics);
 
 export default function ChallengeMonitor() {
   const { categories, challenges } = useData();
@@ -21,12 +24,17 @@ export default function ChallengeMonitor() {
   const challenge = getChallenge(challenges, challengeId);
   const category = getCategory(categories, challenge.categoryId);
 
+  const { lyrics } = challenge;
+
   let lyricsItem = "";
   if (lyricsIndex > -1) {
-    lyricsItem = challenge.lyrics[lyricsIndex];
+    lyricsItem = lyrics[lyricsIndex];
   }
 
-  const isLast = lyricsIndex === challenge.lyrics.length - 1;
+  const isLast = lyricsIndex === lyrics.length - 1;
+
+  const startIndex = lyricsIndex - 2;
+  const endIndex = lyricsIndex + 2;
 
   return (
     <div className="flex h-full w-full flex-col justify-center gap-4">
@@ -54,17 +62,68 @@ export default function ChallengeMonitor() {
           <h3 className="text-4xl uppercase">{challenge.title}</h3>
         </div>
       </Header>
-      <div className="flex-center flex-1 flex-col gap-12">
-        {lyricsItem && (
-          <Lyrics
-            hidden={isLast && !answer}
-            status={status}
-            text={status === "success" ? lyricsItem : answer || lyricsItem}
-          />
-        )}
-        {isLast && status === "fail" && (
-          <Lyrics className="scale-[80%] opacity-80" text={lyricsItem} />
-        )}
+
+      <div className="flex flex-1 flex-col justify-evenly pt-20">
+        <div className="flex-center relative w-full">
+          {lyrics.map((item, index) => {
+            if (index < startIndex || index > endIndex) {
+              return;
+            }
+
+            const isMystery = index === lyrics.length - 1;
+
+            return (
+              <MotionLyrics
+                animate={
+                  index === startIndex
+                    ? "leave"
+                    : index === startIndex + 1
+                    ? "prev"
+                    : index === endIndex - 1
+                    ? "next"
+                    : index === endIndex
+                    ? "enter"
+                    : "current"
+                }
+                className={clsx(
+                  index !== lyricsIndex && "absolute",
+                  isMystery && status === "fail" && "line-through"
+                )}
+                hidden={isMystery && !answer}
+                initial={false}
+                key={item}
+                status={isMystery ? status : "idle"}
+                text={
+                  isMystery && answer.length > 0 && status !== "success"
+                    ? answer
+                    : item
+                }
+                transition={{ ease: "easeOut" }}
+                variants={{
+                  leave: { y: "-300%", opacity: 0 },
+                  prev: { y: "-150%", opacity: isLast ? 0.8 : 0.3 },
+                  current: { y: 0, opacity: 1 },
+                  next: { y: "150%", opacity: 0 },
+                  enter: { y: "300%", opacity: 0 },
+                }}
+              />
+            );
+          })}
+        </div>
+
+        <MotionLyrics
+          animate={
+            lyricsIndex === lyrics.length - 1 && status === "fail"
+              ? "shown"
+              : "hidden"
+          }
+          initial={false}
+          text={lyricsItem}
+          variants={{
+            shown: { opacity: 1, y: 0 },
+            hidden: { opacity: 0, y: "-10%" },
+          }}
+        />
       </div>
     </div>
   );
