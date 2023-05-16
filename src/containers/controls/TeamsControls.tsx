@@ -1,4 +1,4 @@
-import { XMarkIcon } from "@heroicons/react/24/outline";
+import { MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { Suspense, lazy, useState } from "react";
@@ -12,7 +12,7 @@ const EmojiPicker = lazy(() => import("../../components/EmojiPicker"));
 
 const teamSchema = z.object({
   name: z.string().min(1),
-  emoji: z.string().min(1),
+  emoji: z.string().emoji(),
 });
 
 export default function TeamsControls() {
@@ -26,7 +26,6 @@ export default function TeamsControls() {
     formState: { isValid },
     setValue,
     reset,
-    getValues,
   } = useForm<z.infer<typeof teamSchema>>({
     resolver: zodResolver(teamSchema),
   });
@@ -87,42 +86,50 @@ export default function TeamsControls() {
       >
         <input
           {...register("name")}
-          className="input-bordered input-primary input w-full max-w-xs"
+          className="input-bordered input w-full max-w-xs"
           placeholder="Nom de l'équipe"
         />
-        <input {...register("emoji")} type="hidden" />
 
-        <DropdownMenu.Root
-          onOpenChange={setEmojiPickerOpened}
-          open={emojiPickerOpened}
-        >
-          <DropdownMenu.Trigger asChild>
-            <button className="btn-circle btn text-2xl">
-              {getValues("emoji") || "﹖"}
-            </button>
-          </DropdownMenu.Trigger>
+        <div className="input-group w-auto">
+          <input
+            {...register("emoji")}
+            className="input-bordered input w-16 text-center"
+            maxLength={1}
+          />
 
-          <DropdownMenu.Portal>
-            <DropdownMenu.Content
-              className="data-[side=bottom] data-[align=end]"
-              sideOffset={16}
-            >
-              <Suspense>
-                <EmojiPicker
-                  onEmojiClick={(data) => {
-                    setValue("emoji", data.emoji, { shouldValidate: true });
-                    setEmojiPickerOpened(false);
-                  }}
-                />
-              </Suspense>
-            </DropdownMenu.Content>
-          </DropdownMenu.Portal>
-        </DropdownMenu.Root>
+          <DropdownMenu.Root
+            onOpenChange={setEmojiPickerOpened}
+            open={emojiPickerOpened}
+          >
+            <DropdownMenu.Trigger asChild>
+              <button className="btn-circle btn">
+                <MagnifyingGlassIcon height={24} />
+              </button>
+            </DropdownMenu.Trigger>
+
+            <DropdownMenu.Portal>
+              <DropdownMenu.Content
+                className="data-[side=bottom] data-[align=end] z-20"
+                sideOffset={16}
+              >
+                <Suspense>
+                  <EmojiPicker
+                    onEmojiClick={(data) => {
+                      setValue("emoji", data.emoji, { shouldValidate: true });
+                      setEmojiPickerOpened(false);
+                    }}
+                  />
+                </Suspense>
+              </DropdownMenu.Content>
+            </DropdownMenu.Portal>
+          </DropdownMenu.Root>
+        </div>
 
         <button className="btn" disabled={!isValid} type="submit">
           Ajouter
         </button>
       </form>
+
       <div className="divider"></div>
       <div className="flex gap-4">
         <button
