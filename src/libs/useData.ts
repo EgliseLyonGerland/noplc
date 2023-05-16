@@ -6,6 +6,10 @@ import useLocalStorageState from "use-local-storage-state";
 import { categoriesEnpoint, challengesEndpoint } from "./config";
 import { Category, Challenge, Point } from "./types";
 
+function parseLyrics(lyrics: string) {
+  return lyrics.split("\n").filter((line) => line.trim());
+}
+
 export default function useData() {
   const [categories, setCategories] = useLocalStorageState<Category[]>(
     "categories",
@@ -58,7 +62,7 @@ export default function useData() {
     });
 
     setCategories(
-      data.map(({ id, name, point }) => ({
+      data.map<Category>(({ id, name, point }) => ({
         id: kebabCase(id),
         name,
         point,
@@ -73,6 +77,7 @@ export default function useData() {
       titre: string;
       categorie: string;
       paroles: string;
+      parolesSuivantes: string;
     }>(res as string, {
       delimiter: ",",
       header: true,
@@ -83,12 +88,15 @@ export default function useData() {
     });
 
     setChallenges(
-      data.map(({ titre, paroles, categorie }, id) => ({
-        id: id + 1,
-        categoryId: kebabCase(categorie),
-        title: titre,
-        lyrics: paroles.split("\n").filter((line) => line.trim()),
-      }))
+      data.map<Challenge>(
+        ({ titre, paroles, parolesSuivantes, categorie }, id) => ({
+          id: id + 1,
+          categoryId: kebabCase(categorie),
+          title: titre,
+          lyrics: parseLyrics(paroles).concat(parseLyrics(parolesSuivantes)),
+          mysteryIndex: parseLyrics(paroles).length - 1,
+        })
+      )
     );
   }
 

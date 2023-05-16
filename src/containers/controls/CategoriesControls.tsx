@@ -30,7 +30,7 @@ export default function CategoriesControls() {
                 {categories.map((category) => (
                   <button
                     className={clsx(
-                      "btn h-auto font-normal leading-normal",
+                      "btn-lg btn text-sm font-normal leading-normal",
                       view.selectedCategoryId === category.id &&
                         "btn-active outline outline-2",
                       colorsByPoints[category.point][0]
@@ -50,9 +50,7 @@ export default function CategoriesControls() {
                       })
                     }
                   >
-                    <span className="line-clamp-1">
-                      {category.point} - {category.name}
-                    </span>
+                    {category.point} - {category.name}
                   </button>
                 ))}
               </div>

@@ -36,21 +36,22 @@ export default function ChallengeControls() {
 
   const { challengeId, lyricsIndex, answer, status } = view;
 
-  const { lyrics } = getChallenge(challenges, challengeId);
+  const { lyrics, mysteryIndex } = getChallenge(challenges, challengeId);
   const team = getCurrentTeam(state);
 
   const quit = () => {
     dispatch({ type: "challenge.stop" });
   };
 
-  const changeLyrics = (step: 1 | -1) => {
+  const changeLyrics = (index: number) => {
     dispatch({
       type: "challengeView.setLyricsIndex",
-      index: Math.max(-1, Math.min(lyricsIndex + step, lyrics.length - 1)),
+      index: Math.max(-1, Math.min(index, lyrics.length - 1)),
     });
   };
 
   const isLast = lyricsIndex === lyrics.length - 1;
+  const isMystery = lyricsIndex === mysteryIndex;
 
   let startIndex: number;
   let endIndex: number;
@@ -65,7 +66,7 @@ export default function ChallengeControls() {
 
   return (
     <div>
-      <div className="mb-4 p-4 ring-1">
+      <div className="p-4 ring-1">
         <div
           className="relative overflow-hidden"
           style={{ height: `${lyricsLineHeight * 7}em` }}
@@ -86,7 +87,7 @@ export default function ChallengeControls() {
                 }
                 className={clsx(
                   "absolute uppercase transition-opacity",
-                  lyrics.length === index + 1 && "text-primary"
+                  index === mysteryIndex && "font-bold text-primary"
                 )}
                 initial={false}
                 key={index}
@@ -108,29 +109,44 @@ export default function ChallengeControls() {
           })}
         </div>
       </div>
+      <div className="mt-4 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <button
+            className="btn-sm btn"
+            disabled={answer.length > 0 || status !== "idle" || lyricsIndex < 0}
+            onClick={() => changeLyrics(lyricsIndex - 1)}
+          >
+            Précédente
+          </button>
+          <button
+            className="btn-sm btn"
+            disabled={answer.length > 0 || status !== "idle" || isLast}
+            onClick={() => changeLyrics(lyricsIndex + 1)}
+          >
+            Suivante
+          </button>
 
-      <div className="flex items-center gap-4">
-        <button
-          className="btn"
-          disabled={answer.length > 0 || status !== "idle" || lyricsIndex < 0}
-          onClick={() => changeLyrics(-1)}
-        >
-          Paroles précédentes
-        </button>
-        <button
-          className="btn"
-          disabled={answer.length > 0 || status !== "idle" || isLast}
-          onClick={() => changeLyrics(+1)}
-        >
-          Paroles suivantes
-        </button>
-        <span className="text-xl">
+          {[-1, mysteryIndex, lyrics.length - 1].map((index) => (
+            <button
+              className="btn-sm btn-circle btn"
+              disabled={lyricsIndex === index}
+              key={index}
+              onClick={() => changeLyrics(index)}
+            >
+              {index + 1}
+            </button>
+          ))}
+        </div>
+
+        <div>
           {lyricsIndex + 1}
           {" / "}
-          {lyrics.length}
-        </span>
+          {lyrics.length} ({mysteryIndex + 1})
+        </div>
       </div>
+
       <div className="divider"></div>
+
       <form
         className="flex items-center gap-4"
         onSubmit={handleSubmit((data) => {
@@ -146,19 +162,20 @@ export default function ChallengeControls() {
           <input
             {...register("answer")}
             className="input-bordered input-primary input w-full pr-12"
-            disabled={!isLast}
+            disabled={!isMystery}
             placeholder="Résponse"
           />
 
           <button
             className="btn-ghost btn-sm btn-circle btn absolute right-2"
+            disabled={!isMystery}
             onClick={() => setValue("answer", "")}
           >
             <XMarkIcon />
           </button>
         </div>
 
-        <button className="btn" type="submit">
+        <button className="btn" disabled={!isMystery} type="submit">
           OK
         </button>
       </form>
@@ -166,7 +183,7 @@ export default function ChallengeControls() {
       <div className="flex gap-4">
         <button
           className="btn"
-          disabled={!isLast || !answer}
+          disabled={!isMystery || !answer}
           onClick={() =>
             dispatch({
               type: "challengeView.setStatus",

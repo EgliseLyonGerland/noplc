@@ -24,7 +24,7 @@ export default function ChallengeMonitor() {
   const challenge = getChallenge(challenges, challengeId);
   const category = getCategory(categories, challenge.categoryId);
 
-  const { lyrics } = challenge;
+  const { lyrics, mysteryIndex } = challenge;
 
   let lyricsItem = "";
   if (lyricsIndex > -1) {
@@ -70,7 +70,7 @@ export default function ChallengeMonitor() {
               return;
             }
 
-            const isMystery = index === lyrics.length - 1;
+            const isMystery = index === mysteryIndex;
 
             return (
               <MotionLyrics
@@ -113,7 +113,7 @@ export default function ChallengeMonitor() {
 
         <MotionLyrics
           animate={
-            lyricsIndex === lyrics.length - 1 && status === "fail"
+            lyricsIndex === mysteryIndex && status === "fail"
               ? "shown"
               : "hidden"
           }

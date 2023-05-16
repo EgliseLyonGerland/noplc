@@ -18,7 +18,7 @@ export default function Controls() {
         }
       `}</style>
 
-      <div className="flex w-full items-center gap-8 border-b border-neutral p-2 px-4">
+      <div className="sticky top-0 z-10 flex w-full items-center gap-8 border-b border-neutral bg-base-100 p-2 px-4">
         <Logo className="h-8 fill-neutral-content" />
         Centre de contrôle
         <div className="dropdown-end dropdown ml-auto">
@@ -37,7 +37,7 @@ export default function Controls() {
           </ul>
         </div>
       </div>
-      <div className="p-4">
+      <div className="container mx-auto p-8">
         {view.id === "teams" ? (
           <TeamsControls />
         ) : view.id === "categories" ? (

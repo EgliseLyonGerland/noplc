@@ -26,6 +26,7 @@ export const challengeSchema = z.object({
   categoryId: z.string(),
   title: z.string(),
   lyrics: z.array(z.string()),
+  mysteryIndex: z.number(),
 });
 
 export const roundSchema = z.object({
