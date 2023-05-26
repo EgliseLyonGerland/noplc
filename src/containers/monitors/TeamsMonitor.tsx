@@ -1,3 +1,5 @@
+import { motion } from "framer-motion";
+
 import Header from "../../components/Header";
 import Team from "../../components/Team";
 import useAppState from "../../libs/useAppState";
@@ -12,7 +14,9 @@ export default function TeamsMonitor() {
       <div className="flex-center flex-1">
         <div className="grid grid-cols-2 gap-8 lg:grid-cols-4">
           {teams.map((team) => (
-            <Team key={team.id} team={team} />
+            <motion.div key={team.id} layout>
+              <Team team={team} />
+            </motion.div>
           ))}
         </div>
       </div>

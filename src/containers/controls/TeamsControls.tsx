@@ -1,4 +1,8 @@
-import { MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import {
+  ArrowPathIcon,
+  MagnifyingGlassIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { Suspense, lazy, useState } from "react";
@@ -58,7 +62,7 @@ export default function TeamsControls() {
                   <button
                     className="btn-ghost btn-sm btn-circle btn"
                     onClick={() =>
-                      dispatch({ type: "team.delete", id: team.id })
+                      dispatch({ type: "teams.delete", id: team.id })
                     }
                   >
                     <XMarkIcon className="h-6" />
@@ -77,7 +81,7 @@ export default function TeamsControls() {
             return;
           }
           dispatch({
-            type: "team.add",
+            type: "teams.add",
             name: data.name,
             emoji: data.emoji,
           });
@@ -132,6 +136,15 @@ export default function TeamsControls() {
 
       <div className="divider"></div>
       <div className="flex gap-4">
+        <button
+          className="btn-ghost btn-square btn"
+          onClick={() => {
+            dispatch({ type: "teams.shuffle" });
+          }}
+        >
+          <ArrowPathIcon className="h-8" />
+        </button>
+
         <button
           className="btn-primary btn"
           onClick={() => dispatch({ type: "game.start" })}

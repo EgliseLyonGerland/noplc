@@ -1,3 +1,4 @@
+import { shuffle } from "lodash-es";
 import useLocalStorageState from "use-local-storage-state";
 
 import {
@@ -17,13 +18,16 @@ import {
 
 type Action =
   | {
-      type: "team.add";
+      type: "teams.add";
       name: Team["name"];
       emoji: Team["emoji"];
     }
   | {
-      type: "team.delete";
+      type: "teams.delete";
       id: Team["id"];
+    }
+  | {
+      type: "teams.shuffle";
     }
   | {
       type: "game.start";
@@ -79,7 +83,7 @@ type Action =
 
 function reducer(state: State, action: Action): State {
   switch (action.type) {
-    case "team.add":
+    case "teams.add":
       return {
         ...state,
         teams: state.teams.concat({
@@ -88,10 +92,15 @@ function reducer(state: State, action: Action): State {
           emoji: action.emoji,
         }),
       };
-    case "team.delete":
+    case "teams.delete":
       return {
         ...state,
         teams: state.teams.filter((team) => team.id !== action.id),
+      };
+    case "teams.shuffle":
+      return {
+        ...state,
+        teams: shuffle(state.teams),
       };
 
     case "game.start":
