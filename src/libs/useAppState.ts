@@ -61,6 +61,10 @@ type Action =
       isShown: boolean;
     }
   | {
+      type: "categoriesView.showRankings";
+      isShown: boolean;
+    }
+  | {
       type: "challengeView.setLyricsIndex";
       index: number;
     }
@@ -160,7 +164,16 @@ function reducer(state: State, action: Action): State {
         view: categoriesViewSchema.parse({
           ...state.view,
           resultsShown: action.isShown,
+          rankingsShown: false,
           challengesShown: false,
+        }),
+      };
+    case "categoriesView.showRankings":
+      return {
+        ...state,
+        view: categoriesViewSchema.parse({
+          ...state.view,
+          rankingsShown: action.isShown,
         }),
       };
 

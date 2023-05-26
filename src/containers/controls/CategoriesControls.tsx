@@ -139,18 +139,35 @@ export default function CategoriesControls() {
         </div>
       </div>
       <div className="divider"></div>
-
-      <button
-        className="btn-primary btn"
-        onClick={() =>
-          dispatch({
-            type: "categoriesView.showResults",
-            isShown: !view.resultsShown,
-          })
-        }
-      >
-        {view.resultsShown ? "Masquer les résultats" : "Afficher les résultats"}
-      </button>
+      <div className="flex gap-4">
+        <button
+          className="btn-primary btn"
+          onClick={() =>
+            dispatch({
+              type: "categoriesView.showResults",
+              isShown: !view.resultsShown,
+            })
+          }
+        >
+          {view.resultsShown
+            ? "Masquer les résultats"
+            : "Afficher les résultats"}
+        </button>
+        <button
+          className="btn-primary btn"
+          disabled={!view.resultsShown}
+          onClick={() =>
+            dispatch({
+              type: "categoriesView.showRankings",
+              isShown: !view.rankingsShown,
+            })
+          }
+        >
+          {view.rankingsShown
+            ? "Masquer le classement"
+            : "Afficher le classement"}
+        </button>
+      </div>
     </div>
   );
 }

@@ -45,6 +45,7 @@ export const categoriesViewSchema = z.object({
   selectedChallengeId: z.number().nullable().default(null),
   challengesShown: z.boolean().default(false),
   resultsShown: z.boolean().default(false),
+  rankingsShown: z.boolean().default(false),
 });
 
 export const challengeViewSchema = z.object({
