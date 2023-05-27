@@ -1,20 +1,32 @@
 import { Category, Challenge, State } from "./types";
 
-function getChallengesByCategory(
+export function getChallengesByCategory(
   challenges: Challenge[],
-  categoryId: Category["id"]
+  categoryId: Category["id"],
+  demo = false
 ) {
-  return challenges.filter((challenge) => challenge.categoryId === categoryId);
+  return challenges.filter(
+    (challenge) =>
+      challenge.categoryId === categoryId && challenge.demo === demo
+  );
 }
 
 export function isCategoryDone(
   challenges: Challenge[],
   { rounds }: State,
+  categoryId: Category["id"],
+  demo = false
+) {
+  return getChallengesByCategory(challenges, categoryId, demo).some(
+    (challenge) => rounds.some((round) => challenge.id === round.challengeId)
+  );
+}
+
+export function isDemoCategory(
+  challenges: Challenge[],
   categoryId: Category["id"]
 ) {
-  return getChallengesByCategory(challenges, categoryId).some((challenge) =>
-    rounds.some((round) => challenge.id === round.challengeId)
-  );
+  return getChallengesByCategory(challenges, categoryId, true).length > 0;
 }
 
 export function isGameDone(categories: Category[], { rounds }: State) {

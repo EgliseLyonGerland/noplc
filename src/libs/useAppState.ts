@@ -36,6 +36,9 @@ type Action =
       type: "game.stop";
     }
   | {
+      type: "game.toggleDemoMode";
+    }
+  | {
       type: "challenge.start";
       challengeId: Challenge["id"];
     }
@@ -110,12 +113,16 @@ function reducer(state: State, action: Action): State {
             view: categoriesViewSchema.parse({}),
           }
         : state;
-
     case "game.stop":
       return {
         ...state,
         rounds: [],
         view: teamsViewSchema.parse({}),
+      };
+    case "game.toggleDemoMode":
+      return {
+        ...state,
+        demoModeEnabled: !state.demoModeEnabled,
       };
 
     case "challenge.start":
@@ -125,13 +132,11 @@ function reducer(state: State, action: Action): State {
           challengeId: action.challengeId,
         }),
       };
-
     case "challenge.stop":
       return {
         ...state,
         view: categoriesViewSchema.parse({}),
       };
-
     case "challenge.save":
       return {
         ...state,
@@ -194,7 +199,6 @@ function reducer(state: State, action: Action): State {
           lyricsIndex: action.index,
         }),
       };
-
     case "challengeView.setAnswer":
       return {
         ...state,
@@ -203,7 +207,6 @@ function reducer(state: State, action: Action): State {
           answer: action.answer,
         }),
       };
-
     case "challengeView.setStatus":
       return {
         ...state,
@@ -227,5 +230,13 @@ export default function useAppState() {
     setState((prevState) => reducer(prevState, action));
   }
 
-  return { ...state, dispatch };
+  let teams = state.teams;
+  if (state.demoModeEnabled) {
+    teams = [
+      { id: 1, name: "Léa", emoji: "🎻" },
+      { id: 2, name: "Mathilde", emoji: "🇵🇹" },
+    ];
+  }
+
+  return { ...state, teams, dispatch };
 }

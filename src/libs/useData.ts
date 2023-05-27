@@ -78,6 +78,7 @@ export default function useData() {
       categorie: string;
       paroles: string;
       parolesSuivantes: string;
+      demo: boolean;
     }>(res as string, {
       delimiter: ",",
       header: true,
@@ -89,12 +90,13 @@ export default function useData() {
 
     setChallenges(
       data.map<Challenge>(
-        ({ titre, paroles, parolesSuivantes, categorie }, id) => ({
+        ({ titre, paroles, parolesSuivantes, categorie, demo }, id) => ({
           id: id + 1,
           categoryId: kebabCase(categorie),
           title: titre,
           lyrics: parseLyrics(paroles).concat(parseLyrics(parolesSuivantes)),
           mysteryIndex: parseLyrics(paroles).length - 1,
+          demo,
         })
       )
     );

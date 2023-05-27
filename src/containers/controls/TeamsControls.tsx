@@ -22,7 +22,7 @@ const teamSchema = z.object({
 export default function TeamsControls() {
   const [emojiPickerOpened, setEmojiPickerOpened] = useState(false);
   const { sync } = useData();
-  const { teams, dispatch } = useAppState();
+  const { teams, dispatch, demoModeEnabled } = useAppState();
 
   const {
     register,
@@ -151,6 +151,15 @@ export default function TeamsControls() {
         >
           Démarrer le jeu
         </button>
+        <label className="label cursor-pointer">
+          <input
+            checked={demoModeEnabled}
+            className="checkbox mr-2"
+            onChange={() => dispatch({ type: "game.toggleDemoMode" })}
+            type="checkbox"
+          />
+          <span className="label-text">Mode démo</span>
+        </label>
         <button className="btn ml-auto" onClick={sync}>
           Synchroniser
         </button>

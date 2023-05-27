@@ -3,12 +3,16 @@ import clsx from "clsx";
 import { colorsByPoints } from "../../libs/config";
 import useAppState from "../../libs/useAppState";
 import useData from "../../libs/useData";
-import { isCategoryDone } from "../../libs/utils";
+import {
+  isCategoryDone,
+  isDemoCategory,
+  getChallengesByCategory,
+} from "../../libs/utils";
 
 export default function CategoriesControls() {
   const { challenges, categoriesByPoint } = useData();
   const state = useAppState();
-  const { view, dispatch } = state;
+  const { view, dispatch, demoModeEnabled } = state;
 
   if (view.id !== "categories") {
     return null;
@@ -36,7 +40,14 @@ export default function CategoriesControls() {
                       colorsByPoints[category.point][0]
                     )}
                     disabled={
-                      isCategoryDone(challenges, state, category.id) ||
+                      isCategoryDone(
+                        challenges,
+                        state,
+                        category.id,
+                        demoModeEnabled
+                      ) ||
+                      (demoModeEnabled &&
+                        !isDemoCategory(challenges, category.id)) ||
                       view.challengesShown
                     }
                     key={category.id}
@@ -67,39 +78,36 @@ export default function CategoriesControls() {
 
                 {view.selectedCategoryId && (
                   <div className="flex flex-1 flex-col gap-2">
-                    {challenges
-                      .filter(
-                        (challenge) =>
-                          challenge.categoryId === view.selectedCategoryId
-                      )
-                      .map((challenge) => (
-                        <button
-                          className={clsx(
-                            "btn",
-                            view.selectedChallengeId === challenge.id &&
-                              "btn-active outline outline-2"
-                          )}
-                          disabled={
-                            !view.challengesShown ||
-                            (view.selectedChallengeId !== null &&
-                              view.selectedChallengeId !== challenge.id)
-                          }
-                          key={challenge.id}
-                          onClick={() => {
-                            dispatch({
-                              type: "categoriesView.selectChallenge",
-                              challengeId:
-                                view.selectedChallengeId === challenge.id
-                                  ? null
-                                  : challenge.id,
-                            });
-                          }}
-                        >
-                          <span className="line-clamp-1">
-                            {challenge.title}
-                          </span>
-                        </button>
-                      ))}
+                    {getChallengesByCategory(
+                      challenges,
+                      view.selectedCategoryId,
+                      demoModeEnabled
+                    ).map((challenge) => (
+                      <button
+                        className={clsx(
+                          "btn",
+                          view.selectedChallengeId === challenge.id &&
+                            "btn-active outline outline-2"
+                        )}
+                        disabled={
+                          !view.challengesShown ||
+                          (view.selectedChallengeId !== null &&
+                            view.selectedChallengeId !== challenge.id)
+                        }
+                        key={challenge.id}
+                        onClick={() => {
+                          dispatch({
+                            type: "categoriesView.selectChallenge",
+                            challengeId:
+                              view.selectedChallengeId === challenge.id
+                                ? null
+                                : challenge.id,
+                          });
+                        }}
+                      >
+                        <span className="line-clamp-1">{challenge.title}</span>
+                      </button>
+                    ))}
                   </div>
                 )}
 

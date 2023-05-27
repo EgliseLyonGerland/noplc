@@ -27,6 +27,7 @@ export const challengeSchema = z.object({
   title: z.string(),
   lyrics: z.array(z.string()),
   mysteryIndex: z.number(),
+  demo: z.boolean(),
 });
 
 export const roundSchema = z.object({
@@ -66,4 +67,5 @@ export const stateSchema = z.object({
   teams: z.array(teamSchema).default([]),
   rounds: z.array(roundSchema).default([]),
   view: viewSchema.default({ id: "teams" }),
+  demoModeEnabled: z.boolean().default(false),
 });
